@@ -15,37 +15,38 @@ import { studioHero } from "@/data/content"
   description="Oriel is Mira Castell: portraits, places and weather in natural light for magazines, architects, hotels and brands. Process, commissions, rates and FAQ."
   image={studioHero.image}
 >
-  <section class="pb-12 pt-10 md:pb-16 md:pt-16">
-    <div class="shell">
-      <p class="t-meta text-ash">{studioHero.eyebrow}</p>
-      <h1 class="t-l mt-5 max-w-[16ch]">
-        <Words text={studioHero.title[0]} />{" "}
-        <span class="t-l-serif italic"><Words text={studioHero.title[1]} /></span>
+  <section class="px-5 pb-4 pt-[72px] md:px-6 md:pb-10 md:pt-[88px] lg:px-12 lg:py-24">
+    <div class="mx-auto flex max-w-[1536px] flex-col gap-8 lg:gap-12" data-reveal>
+      <p class="t-meta accent" data-reveal="rise">{studioHero.eyebrow}</p>
+      <h1 class="flex flex-col" data-reveal="rise">
+        <span class="t-hero"><Words text={studioHero.title[0]} /></span>
+        <span class="flex flex-wrap items-end gap-3 md:gap-5 lg:gap-6">
+          <span class="t-hero">{studioHero.title[1]}</span>
+          <span class="t-hero-serif">{studioHero.title[2]}</span>
+        </span>
       </h1>
-
-      <div class="mt-10 grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
-        <p class="t-small max-w-[48ch] text-ash">{studioHero.body}</p>
-        <ul class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-          {studioHero.facts.map(([k, v], i) => (
-            <li class="rule pt-3" data-reveal style={`--reveal-delay:${(i * 0.07).toFixed(2)}s`}>
-              <p class="t-meta text-ash">{k}</p>
-              <p class="t-small mt-2 max-w-[30ch]">{v}</p>
-            </li>
+      <div class="flex flex-col gap-8 lg:flex-row lg:gap-12" data-reveal="rise">
+        <p class="t-lead lg:flex-1">{studioHero.body}</p>
+        <div class="grid grid-cols-2 gap-x-10 gap-y-5 md:max-w-[320px] lg:max-w-none lg:px-[59px]">
+          {studioHero.facts.map(([k, v]) => (
+            <div class="flex flex-col gap-2 border-t border-hairline pt-4">
+              <p class={`t-meta ${k === "Next opening" ? "accent" : ""}`}>{k}</p>
+              <p class="t-small">{v}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
-
-      <figure class="mt-12 md:mt-16">
-        <Frame src={studioHero.image} alt={studioHero.alt} eager class="aspect-[16/9] w-full" sizes="100vw" />
-        <figcaption class="t-meta mt-3 text-ash">{studioHero.caption}</figcaption>
+      <figure class="flex flex-col gap-3">
+        <Frame src={studioHero.image} alt={studioHero.alt} eager class="aspect-[1.78] w-full" style="--frame-from:1.04;--frame-dur:1.1s" sizes="100vw" />
+        <figcaption class="t-meta">{studioHero.caption}</figcaption>
       </figure>
     </div>
   </section>
 
-  <AboutBand />
-  <CommissionsBand />
-  <VoicesBand />
-  <RatesBand />
-  <FaqBand />
-  <ContactBand />
+  <AboutBand pad="studio" />
+  <CommissionsBand pad="studio" />
+  <VoicesBand pad="studio" />
+  <RatesBand pad="studio" />
+  <FaqBand pad="studio" />
+  <ContactBand variant="studio" />
 </Base>

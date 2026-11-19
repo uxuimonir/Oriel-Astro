@@ -22,6 +22,10 @@
   --color-aftermidnight: rgb(16, 18, 31);
   --color-limewash: rgb(243, 239, 230);
 
+  /* Salt / Stone have no dark value in Framer: light pills stay light in the black theme. */
+  --color-paper: rgb(241, 238, 231);
+  --color-paperdim: rgb(230, 226, 216);
+
   --font-sans: "Archivo", system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-mono: "DM Mono", ui-monospace, monospace;
@@ -31,7 +35,26 @@
   --breakpoint-lg: 1200px;
 }
 
-:root { color-scheme: light; }
+/* ---- Black theme: the Framer project's own dark values for its theme-aware tokens ----
+   Page → salt, Raised → stone, Primary → basalt, Secondary → ash, Hairline, Blue Hour, series tints.
+   Fixed dark tokens (night, dusk, ondark, ashnight, bluenight, hairlinedark) keep their values.
+   Delete this block to return to the light theme. */
+:root {
+  color-scheme: dark;
+  --color-salt: rgb(12, 13, 13);
+  --color-stone: rgb(27, 26, 24);
+  --color-basalt: rgb(239, 238, 233);
+  --color-ash: rgb(156, 157, 151);
+  --color-hairline: rgba(237, 235, 229, 0.16);
+  --color-blue: rgb(142, 155, 255);
+
+  --color-tide: rgb(15, 29, 34);
+  --color-lowcloud: rgb(25, 28, 33);
+  --color-seahours: rgb(12, 26, 42);
+  --color-saltline: rgb(42, 26, 18);
+  --color-limewash: rgb(33, 30, 24);
+}
+::selection { background: var(--color-bluenight); color: var(--color-night); }
 
 html { scroll-behavior: smooth; }
 html, body { overflow-x: clip; max-width: 100%; }
@@ -42,49 +65,51 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---- Type scale: exact Framer presets, same breakpoints (0 / 390 / 810 / 1200) ---- */
-.t-hero { font-family: var(--font-sans); font-weight: 300; font-size: 44px; line-height: 0.9em; letter-spacing: -0.045em; }
-.t-hero-serif { font-family: var(--font-serif); font-weight: 400; font-size: 46px; line-height: 0.9em; letter-spacing: -0.02em; }
-.t-xl { font-family: var(--font-sans); font-weight: 300; font-size: 34px; line-height: 0.92em; letter-spacing: -0.04em; }
-.t-l { font-family: var(--font-sans); font-weight: 300; font-size: 36px; line-height: 0.95em; letter-spacing: -0.035em; }
-.t-l-serif { font-family: var(--font-serif); font-weight: 400; font-size: 40px; line-height: 0.95em; letter-spacing: -0.01em; }
-.t-m { font-family: var(--font-sans); font-weight: 300; font-size: 30px; line-height: 1em; letter-spacing: -0.03em; }
-.t-lead { font-size: 20px; line-height: 1.35em; letter-spacing: -0.01em; }
+/* ---- Type scale: Framer text styles. Headings use Framer's own tablet and phone preset copies
+   (phone < 810, tablet 810–1199, desktop ≥ 1200); body, small and meta keep their preset breakpoints. ---- */
+.t-hero { font-family: var(--font-sans); font-weight: 300; font-size: 42px; line-height: 0.95em; letter-spacing: -0.045em; }
+.t-hero-serif { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: 46px; line-height: 0.95em; letter-spacing: -0.02em; }
+.t-xl { font-family: var(--font-sans); font-weight: 300; font-size: 34px; line-height: 0.98em; letter-spacing: -0.04em; }
+.t-l { font-family: var(--font-sans); font-weight: 300; font-size: 29px; line-height: 1em; letter-spacing: -0.035em; }
+.t-l-serif { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: 32px; line-height: 1em; letter-spacing: -0.01em; }
+.t-m { font-family: var(--font-sans); font-weight: 300; font-size: 25px; line-height: 1.06em; letter-spacing: -0.03em; }
+.t-lead { font-size: 18px; line-height: 1.4em; letter-spacing: -0.01em; }
 .t-body { font-size: 16px; line-height: 1.55em; }
 .t-small { font-size: 14px; line-height: 1.5em; }
-.t-meta { font-family: var(--font-mono); font-size: 11px; line-height: 1.5em; letter-spacing: 0.07em; text-transform: uppercase; }
-.t-quote { font-family: var(--font-serif); font-weight: 400; font-size: 30px; line-height: 1.04em; letter-spacing: -0.01em; }
+.t-meta { font-family: var(--font-mono); font-size: 11px; line-height: 1.5em; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-ash); }
+.t-meta.accent { color: var(--color-blue); }
+.on-dark .t-meta { color: var(--color-ashnight); }
+.on-dark .t-meta.accent { color: var(--color-bluenight); }
+.t-small { color: var(--color-ash); }
+.on-dark .t-small { color: var(--color-ashnight); }
+.on-dark { color: var(--color-ondark); }
+.t-quote { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: 30px; line-height: 1.04em; letter-spacing: -0.01em; }
 .t-button { font-size: 14px; font-weight: 500; }
 .t-logo { font-size: 16px; font-weight: 500; line-height: 1em; letter-spacing: 0.01em; }
 
-@media (min-width: 390px) {
-  .t-hero { font-size: 56px; }
-  .t-hero-serif { font-size: 60px; }
-  .t-xl { font-size: 44px; }
-}
 @media (min-width: 810px) {
-  .t-hero { font-size: 96px; }
-  .t-hero-serif { font-size: 100px; }
-  .t-xl { font-size: 72px; }
-  .t-l { font-size: 52px; }
-  .t-l-serif { font-size: 56px; }
-  .t-m { font-size: 40px; }
-  .t-lead { font-size: 22px; }
+  .t-hero { font-size: 76px; line-height: 0.92em; }
+  .t-hero-serif { font-size: 80px; line-height: 0.92em; }
+  .t-xl { font-size: 58px; line-height: 0.94em; }
+  .t-l { font-size: 44px; line-height: 0.98em; }
+  .t-l-serif { font-size: 48px; line-height: 0.98em; }
+  .t-m { font-size: 34px; line-height: 1.02em; }
+  .t-lead { font-size: 20px; line-height: 1.38em; }
   .t-body { font-size: 17px; }
   .t-small { font-size: 15px; }
   .t-meta { font-size: 12px; }
   .t-quote { font-size: 40px; }
-  .t-button, .t-logo { font-size: 15px; }
+  .t-button { font-size: 15px; }
   .t-logo { font-size: 17px; }
 }
 @media (min-width: 1200px) {
-  .t-hero { font-size: 140px; }
-  .t-hero-serif { font-size: 148px; }
-  .t-xl { font-size: 96px; }
-  .t-l { font-size: 68px; }
-  .t-l-serif { font-size: 72px; }
-  .t-m { font-size: 52px; }
-  .t-lead { font-size: 24px; }
+  .t-hero { font-size: 140px; line-height: 0.9em; }
+  .t-hero-serif { font-size: 148px; line-height: 0.9em; }
+  .t-xl { font-size: 96px; line-height: 0.92em; }
+  .t-l { font-size: 68px; line-height: 0.95em; }
+  .t-l-serif { font-size: 72px; line-height: 0.95em; }
+  .t-m { font-size: 52px; line-height: 1em; }
+  .t-lead { font-size: 24px; line-height: 1.35em; }
   .t-body { font-size: 18px; }
   .t-quote { font-size: 52px; }
   .t-logo { font-size: 18px; }
@@ -102,38 +127,45 @@ body {
 .rule { border-top: 1px solid var(--color-hairline); }
 .rule-dark { border-top: 1px solid var(--color-hairlinedark); }
 
-/* ---- Motion: mirrors Framer appearEffect / textEffect ---- */
+/* ---- Motion: Framer appearEffect / textEffect, same springs and tweens ----
+   Section content: spring 0.9s bounce 0.18, y 36, children staggered 0.08s.
+   Headers / rows: tween 0.8s [0.22,1,0.36,1], y 24.  Images: scale 1.06 → 1, 1.2s. */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: linear(0, 0.0113, 0.0415, 0.0857, 0.1397, 0.2001, 0.2641, 0.3296, 0.3947, 0.4582, 0.5191, 0.5765, 0.6301, 0.6796, 0.7248, 0.7657, 0.8024, 0.835, 0.8638, 0.8891, 0.911, 0.9298, 0.9459, 0.9596, 0.971, 0.9804, 0.9881, 0.9944, 0.9993, 1.0031, 1.006, 1.0081, 1.0096, 1.0105, 1.011, 1.0111, 1.011, 1.0106, 1.0101, 1.0095, 1);
+  --ease-spring-fast: linear(0, 0.0223, 0.0787, 0.1564, 0.2456, 0.3389, 0.4313, 0.5191, 0.6, 0.6728, 0.7369, 0.7923, 0.8394, 0.8787, 0.911, 0.9371, 0.9578, 0.9738, 0.9861, 0.9951, 1.0016, 1.006, 1.0088, 1.0104, 1.011, 1.011, 1.0106, 1.0098, 1);
+  --ease-spring-snap: linear(0, 0.0298, 0.1034, 0.2017, 0.3109, 0.421, 0.5257, 0.621, 0.7048, 0.7763, 0.8358, 0.8841, 0.9223, 0.9518, 0.9738, 0.9898, 1.0009, 1.0081, 1.0124, 1.0146, 1.0152, 1.0147, 1.0136, 1.0121, 1);
+}
 [data-reveal] {
   opacity: 0;
   transform: translateY(36px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.9s var(--ease-spring), transform 0.9s var(--ease-spring);
   transition-delay: var(--reveal-delay, 0s);
-  will-change: opacity, transform;
 }
+[data-reveal="rise"] { transform: translateY(24px); transition-timing-function: var(--ease-out); transition-duration: 0.8s; }
 [data-reveal].is-in { opacity: 1; transform: none; }
 
 [data-frame] { overflow: hidden; }
 [data-frame] img {
   opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(var(--frame-from, 1.06));
+  transition: opacity var(--frame-dur, 1.2s) var(--ease-out), transform var(--frame-dur, 1.2s) var(--ease-out);
 }
 [data-frame].is-in img { opacity: 1; transform: none; }
-[data-frame][data-hover] img { transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1); }
-[data-frame][data-hover]:hover img { transform: scale(1.03); }
+[data-frame][data-hover].is-in img { transition: opacity 1.2s var(--ease-out), transform 0.6s var(--ease-out); }
+[data-frame][data-hover]:hover img, a:hover > [data-frame][data-hover] img, .group:hover [data-frame][data-hover] img { transform: scale(1.03); }
 
 [data-words] > span {
   display: inline-block;
-  white-space: pre;
   opacity: 0;
   filter: blur(5px);
   transform: translateY(22px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.9s var(--ease-spring), transform 0.9s var(--ease-spring), filter 0.9s var(--ease-spring);
 }
 [data-words].is-in > span { opacity: 1; filter: blur(0); transform: none; }
 
-.ticker-track { display: flex; width: max-content; animation: ticker 38s linear infinite; }
-.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-track { display: flex; width: max-content; animation: ticker var(--ticker-dur, 90s) linear infinite; }
+.ticker-track[data-reverse] { animation-direction: reverse; }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -168,3 +200,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ticker-track { animation: none !important; }
 }
+
+/* ---- Buttons and cards: Framer hover variants ---- */
+.text-basalt-fixed { color: rgb(18, 19, 18); }
+.btn-label { display: inline-block; transition: transform 0.3s var(--ease-out); }
+.btn:hover .btn-label, .group:hover .text-basalt-fixed { color: rgb(18, 19, 18); }
+.btn-label { transform: translateX(4px); }
+.card-photo img { transition: transform 0.6s var(--ease-out), opacity 1.2s var(--ease-out) !important; }
+.group:hover .card-photo.is-in img { transform: scale(1.05); }
+.card-title { transition: transform 0.6s var(--ease-out); }
+.group:hover .card-title { transform: translateX(6px); }

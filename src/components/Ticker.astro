@@ -1,9 +1,26 @@
 ---
+/** Type band: two Framer tickers. Headline 36px/s, times 24px/s reversed; both slow to 40% on hover. */
 import { ticker } from "@/data/content"
-const line = `${ticker} · `
 ---
-<section aria-hidden="true" class="ticker border-y border-hairline bg-stone/60 overflow-hidden py-6 md:py-10">
-  <div class="ticker-track">
-    {[0, 1].map(() => <span class="t-m whitespace-nowrap font-light text-ash">{line.repeat(4)}</span>)}
+<section aria-hidden="true" class="ticker flex flex-col gap-3 overflow-hidden border-y border-hairline py-4 md:gap-4 md:py-5 lg:gap-[19px] lg:py-10" data-reveal>
+  <div class="ticker-track" style="--ticker-dur:90s" data-ticker>
+    {[0, 1].map(() => <span class="t-xl whitespace-nowrap pr-10 md:pr-12 lg:pr-16">{ticker.headline}</span>)}
+  </div>
+  <div class="ticker-track" style="--ticker-dur:103s" data-ticker data-reverse>
+    {[0, 1].map(() => <span class="t-meta whitespace-nowrap pr-6 md:pr-8 lg:pr-10">{ticker.times.repeat(2)}</span>)}
   </div>
 </section>
+
+<script>
+  function bindTickers() {
+    document.querySelectorAll<HTMLElement>(".ticker").forEach((band) => {
+      if (band.dataset.bound) return
+      band.dataset.bound = "1"
+      const anims = () => Array.from(band.querySelectorAll<HTMLElement>("[data-ticker]")).flatMap((t) => t.getAnimations())
+      band.addEventListener("mouseenter", () => anims().forEach((a) => a.updatePlaybackRate(0.4)))
+      band.addEventListener("mouseleave", () => anims().forEach((a) => a.updatePlaybackRate(1)))
+    })
+  }
+  bindTickers()
+  document.addEventListener("astro:page-load", bindTickers)
+</script>

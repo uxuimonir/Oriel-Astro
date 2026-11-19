@@ -1,38 +1,41 @@
 ---
+import Logo from "./Logo.astro"
 import { footer, site } from "@/data/content"
+const [series, studio] = footer.columns
 ---
-<footer class="bg-night text-ondark">
-  <div class="shell py-16 md:py-20">
-    <div class="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr_1.2fr]">
-      <div class="max-w-[340px]">
-        <p class="t-logo flex items-center gap-2">
-          <span aria-hidden="true" class="inline-block h-3.5 w-3.5 rounded-t-full border border-ondark"></span>
-          {site.name}
-        </p>
-        <p class="t-small mt-4 text-ashnight">{footer.blurb}</p>
+<footer class="on-dark border-t border-hairlinedark bg-night px-5 pb-6 pt-12 md:px-8 md:pb-7 md:pt-[68px] lg:px-12 lg:pb-10 lg:pt-24">
+  <div class="mx-auto flex max-w-[1440px] flex-col gap-11 md:gap-[60px] lg:gap-20">
+    <div class="flex flex-col gap-8 md:flex-row md:flex-wrap md:gap-10 lg:grid lg:grid-cols-[437fr_180fr_162fr_325fr] lg:gap-0">
+      <div class="flex flex-col gap-6">
+        <Logo dark />
+        <p class="t-small max-w-[340px] md:w-[205px] lg:w-auto">{footer.blurb}</p>
       </div>
 
-      {footer.columns.map((col) => (
-        <nav aria-label={col.title}>
-          <p class="t-meta text-ashnight">{col.title}</p>
-          <ul class="mt-4 space-y-2.5">
-            {col.links.map((l) => (
-              <li><a href={l.href} class="t-small link-quiet text-ondark/85">{l.label}</a></li>
-            ))}
-          </ul>
-        </nav>
-      ))}
+      <div class="flex gap-8 md:flex-1 lg:contents">
+        {[series, studio].map((col) => (
+          <nav aria-label={col.title} class="flex w-[140px] flex-col gap-3 md:w-auto md:px-2 lg:px-0">
+            <p class="t-meta">{col.title}</p>
+            {col.links.map((l) =>
+              l.href ? (
+                <a href={l.href} class="t-small link-quiet self-start text-ondark">{l.label}</a>
+              ) : (
+                <span class="t-small">{l.label}</span>
+              )
+            )}
+          </nav>
+        ))}
+      </div>
 
-      <div>
-        <p class="t-meta text-ashnight">{footer.letterTitle}</p>
-        <p class="t-small mt-4 text-ashnight">{footer.letter}</p>
-        <a href={site.instagram} rel="noopener noreferrer" target="_blank" class="t-small link-quiet mt-5 inline-block">Instagram ↗</a>
+      <div class="flex flex-col gap-3 md:flex-1">
+        <p class="t-meta">{footer.letterTitle}</p>
+        <p class="t-small">{footer.letter}</p>
+        <a href={site.instagram} rel="noopener noreferrer" target="_blank" class="t-button self-start border-b border-bluenight py-1 text-ondark transition-colors hover:text-bluenight">Instagram ↗</a>
       </div>
     </div>
 
-    <div class="rule-dark mt-14 flex flex-col gap-4 pt-6 md:flex-row md:items-center md:justify-between">
-      <p class="t-meta max-w-[760px] text-ashnight">{footer.legal}</p>
-      <a href="#top" class="t-meta link-quiet text-ondark">{footer.back}</a>
+    <div class="flex flex-col gap-6 border-t border-hairlinedark pt-6 md:flex-row md:flex-wrap md:items-center md:justify-between">
+      <p class="t-meta max-w-[760px] md:w-[70%] lg:flex-1">{footer.legal}</p>
+      <a href="#top" class="t-button self-start text-ondark transition-colors hover:text-bluenight md:self-auto">{footer.back}</a>
     </div>
   </div>
 </footer>

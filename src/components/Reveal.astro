@@ -1,7 +1,0 @@
----
-/** Scroll reveal: opacity 0 → 1, y 36 → 0, spring-ish ease, like the Framer appearEffect. */
-interface Props { class?: string; delay?: number; as?: string }
-const { class: className = "", delay = 0, as = "div" } = Astro.props
-const Tag = as as any
----
-<Tag class={className} data-reveal style={`--reveal-delay:${delay}s`}><slot /></Tag>

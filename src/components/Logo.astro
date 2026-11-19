@@ -1,0 +1,11 @@
+---
+/** Oriel mark: an arched window (18×22, 1.5px stroke) with a horizon line 12px down, then the wordmark. */
+interface Props { dark?: boolean }
+const { dark = false } = Astro.props
+---
+<a href="/" class={`t-logo flex items-center gap-2.5 ${dark ? "text-ondark" : ""}`}>
+  <span aria-hidden="true" class="relative block h-[22px] w-[18px] rounded-t-full border-[1.5px] border-current">
+    <span class="absolute inset-x-0 top-[10.5px] h-[1.5px] bg-current"></span>
+  </span>
+  Oriel
+</a>

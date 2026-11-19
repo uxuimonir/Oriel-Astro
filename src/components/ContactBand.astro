@@ -1,61 +1,80 @@
 ---
 import Frame from "./Frame.astro"
 import Words from "./Words.astro"
-import Reveal from "./Reveal.astro"
-import { contact } from "@/data/content"
-interface Props { variant?: "band" | "page"; level?: "h1" | "h2" }
+import Button from "./Button.astro"
+import { contact, site } from "@/data/content"
+interface Props { variant?: "band" | "page" | "spacious" | "studio"; level?: "h1" | "h2" }
 const { variant = "band", level = "h2" } = Astro.props
 const Head = level as any
 const isPage = variant === "page"
+const linkFor = (k: string, v: string) => (k === "Write" ? `mailto:${v}` : k === "Call" ? `tel:${v.replace(/\s/g, "")}` : null)
+
+/** Framer pads this band differently per page; /studio has no padding and an 8px gap (as in the source file). */
+const pads = {
+  band: "pb-8 pt-12 md:pb-16 md:pt-20 lg:py-[100px]",
+  page: "pb-6 pt-[72px] md:pb-12 md:pt-[88px] lg:pb-[120px] lg:pt-32",
+  spacious: "pb-8 pt-12 md:pb-16 md:pt-20 lg:pb-[120px] lg:pt-32",
+  studio: "pb-8 pt-12 md:py-0",
+}
+const Details = isPage ? "grid gap-4 md:grid-cols-2 md:gap-8" : "grid gap-6 md:grid-cols-2 md:gap-8 lg:flex-1 lg:gap-x-8 lg:gap-y-10"
 ---
-<section id="contact" class={`bg-night text-ondark ${isPage ? "pb-[88px] pt-14 md:pb-[120px] md:pt-20 lg:pb-[160px] lg:pt-24" : "band"}`}>
-  <div class="shell">
-    <p class="t-meta flex items-center gap-2 text-bluenight">
-      <span aria-hidden="true" class="inline-block h-[6px] w-[6px] rounded-full bg-bluenight"></span>
-      {contact.eyebrow}
+<section id="contact" class={`on-dark bg-night px-5 md:px-6 lg:px-12 ${pads[variant]}`} data-reveal>
+  <div class={`mx-auto flex max-w-[1536px] flex-col ${variant === "studio" ? "gap-10 md:gap-2 md:px-[4%]" : "gap-10 md:gap-12 lg:gap-16"}`}>
+    <p class="flex items-center gap-2" data-reveal="rise">
+      <span aria-hidden="true" class="h-[7px] w-[7px] rounded-full bg-bluenight"></span>
+      <span class="t-meta accent">{contact.eyebrow}</span>
     </p>
-    <Head class="t-hero mt-6 max-w-[14ch]">
-      <Words text={contact.title.slice(0, 2).join(" ")} />{" "}
-      <span class="t-hero-serif italic"><Words text={contact.title[2]} /></span>
+
+    <Head class="flex flex-col" data-reveal="rise">
+      <span class="t-hero"><Words text={contact.title[0]} /></span>
+      <span class="t-hero"><Words text={contact.title[1]} /></span>
+      <span class="flex flex-wrap items-end gap-3 md:gap-5 lg:gap-6">
+        <span class="t-hero"><Words text={contact.title[2]} /></span>
+        <span class="t-hero-serif"><Words text={contact.title[3]} /></span>
+      </span>
     </Head>
 
-    <div class={`mt-12 grid gap-10 ${isPage ? "lg:grid-cols-2 lg:gap-16" : "lg:grid-cols-2"}`}>
-      <div>
-        <p class="t-body max-w-[44ch] text-ondark/85">{contact.body}</p>
-        <div class="mt-9 flex flex-wrap items-center gap-6">
-          {!isPage && (
-            <a
-              href="/contact"
-              class="t-button inline-flex items-center gap-2 rounded-full bg-ondark px-6 py-3 text-basalt transition-colors duration-300 hover:bg-bluenight hover:text-ondark"
-            >{contact.button}</a>
-          )}
-          <p class="t-meta flex items-center gap-2 text-ashnight">
-            <span aria-hidden="true" class="inline-block h-[6px] w-[6px] rounded-full bg-bluenight"></span>
-            {contact.availability}
+    <div class={isPage ? "flex flex-col gap-8 lg:gap-12" : "flex flex-col gap-6 md:gap-8 lg:flex-row lg:gap-16"} data-reveal="rise">
+      <div class={`flex flex-col ${isPage ? "gap-8 lg:gap-12" : "gap-4 md:gap-6 lg:flex-1 lg:gap-8"}`}>
+        <p class="t-lead max-w-[520px]">{contact.body}</p>
+        <div class="flex flex-col items-stretch gap-4 md:flex-row md:flex-wrap md:items-center md:gap-[22px]">
+          {!isPage && <Button href={`mailto:${site.email}`} variant="secondary">{contact.button}</Button>}
+          <p class="flex items-center gap-2">
+            <span aria-hidden="true" class="h-[7px] w-[7px] rounded-full bg-bluenight"></span>
+            <span class="t-meta">{contact.availability}</span>
           </p>
         </div>
+        {isPage && (<ul class={Details}>
+          {contact.details.map(([k, v]) => {
+            const href = linkFor(k, v)
+            const big = k === "Write" || k === "Call"
+            return (
+              <li class={`flex flex-col gap-2 border-t border-hairlinedark pt-4 ${isPage ? "lg:pt-6" : ""}`}>
+                <p class="t-meta">{k}</p>
+                {href ? <a href={href} class={`${big ? "t-lead" : "t-body"} link-quiet self-start`}>{v}</a> : <p class={big ? "t-lead" : "t-body"}>{v}</p>}
+              </li>
+            )
+          })}
+        </ul>)}
       </div>
-
-      <Reveal as="ul" class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-        {contact.details.map(([k, v]) => (
-          <li class="rule-dark pt-5">
-            <p class="t-meta text-ashnight">{k}</p>
-            {k === "Write" ? (
-              <p class="t-body mt-2"><a href={`mailto:${v}`} class="link-quiet">{v}</a></p>
-            ) : k === "Call" ? (
-              <p class="t-body mt-2"><a href={`tel:${v.replace(/\s/g, "")}`} class="link-quiet">{v}</a></p>
-            ) : (
-              <p class="t-body mt-2">{v}</p>
-            )}
-          </li>
-        ))}
-      </Reveal>
+      {!isPage && (<ul class={Details}>
+          {contact.details.map(([k, v]) => {
+            const href = linkFor(k, v)
+            const big = k === "Write" || k === "Call"
+            return (
+              <li class={`flex flex-col gap-2 border-t border-hairlinedark pt-4 ${isPage ? "lg:pt-6" : ""}`}>
+                <p class="t-meta">{k}</p>
+                {href ? <a href={href} class={`${big ? "t-lead" : "t-body"} link-quiet self-start`}>{v}</a> : <p class={big ? "t-lead" : "t-body"}>{v}</p>}
+              </li>
+            )
+          })}
+        </ul>)}
     </div>
 
     {!isPage && (
-      <figure class="mt-16">
-        <Frame src={contact.image} alt={contact.alt} class="aspect-[21/9] w-full" sizes="100vw" />
-        <figcaption class="t-meta mt-3 text-ashnight">{contact.caption}</figcaption>
+      <figure class="flex flex-col gap-4">
+        <Frame src={contact.image} alt={contact.alt} class="aspect-[1.78] w-full" sizes="100vw" />
+        <figcaption class="t-meta">{contact.caption}</figcaption>
       </figure>
     )}
   </div>

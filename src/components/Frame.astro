@@ -12,6 +12,7 @@ interface Props {
   eager?: boolean
   sizes?: string
   widths?: number[]
+  style?: string
 }
 const {
   src,
@@ -22,12 +23,13 @@ const {
   eager = false,
   sizes = "100vw",
   widths = [420, 768, 1200, 1800],
+  style,
 } = Astro.props
 const source = photo(src)
 const list = widths.filter((w) => w <= source.width)
 if (list.length === 0) list.push(source.width)
 ---
-<div class={`relative ${className}`} data-frame data-hover={hover ? "" : undefined}>
+<div class={`relative ${className}`} style={style} data-frame data-hover={hover ? "" : undefined}>
   <Image
     src={source}
     alt={alt}

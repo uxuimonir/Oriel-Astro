@@ -1,21 +1,23 @@
 ---
 import Base from "@/layouts/Base.astro"
 import Words from "@/components/Words.astro"
+import Button from "@/components/Button.astro"
 import { notFound } from "@/data/content"
 ---
 <Base title="Page not found | Oriel" description={notFound.body} noindex>
-  <section class="flex min-h-[74vh] items-center bg-night py-24 text-ondark md:min-h-[78vh]">
-    <div class="shell">
-      <p class="t-meta text-bluenight">{notFound.eyebrow}</p>
-      <h1 class="t-hero mt-6 max-w-[10ch]">
-        <Words text={notFound.title[0]} />{" "}
-        <span class="t-hero-serif italic"><Words text={notFound.title[1]} /></span>
+  <section class="on-dark flex min-h-[78vh] items-center bg-night px-5 pb-12 pt-[72px] md:px-6 md:pb-20 md:pt-[88px] lg:px-12 lg:py-32" data-reveal="rise">
+    <div class="mx-auto flex w-full max-w-[1536px] flex-col gap-6 md:gap-8 lg:gap-10" data-reveal>
+      <p class="flex items-center gap-2">
+        <span aria-hidden="true" class="h-[7px] w-[7px] rounded-full bg-bluenight"></span>
+        <span class="t-meta accent">{notFound.eyebrow}</span>
+      </p>
+      <h1 class="flex flex-col">
+        <span class="t-hero"><Words text={notFound.title[0]} /></span>
+        <span class="t-hero-serif"><Words text={notFound.title[1]} /></span>
       </h1>
-      <p class="t-body mt-8 max-w-[42ch] text-ondark/85">{notFound.body}</p>
-      <div class="mt-10 flex flex-wrap gap-8">
-        {notFound.links.map((l) => (
-          <a href={l.href} class="t-small border-b border-current pb-1 transition-colors duration-300 hover:text-bluenight">{l.label}</a>
-        ))}
+      <p class="t-lead max-w-[560px]">{notFound.body}</p>
+      <div class="flex flex-wrap gap-5 md:gap-4 lg:gap-6">
+        {notFound.links.map((l) => <Button href={l.href} variant="textDark">{l.label}</Button>)}
       </div>
     </div>
   </section>

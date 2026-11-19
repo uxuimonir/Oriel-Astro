@@ -3,20 +3,23 @@ import Words from "./Words.astro"
 import Frame from "./Frame.astro"
 import { hero } from "@/data/content"
 ---
-<section class="pt-10 md:pt-16">
-  <div class="shell">
-    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <h1 class="t-hero max-w-[9ch]"><Words text={hero.title} /></h1>
-      <p class="t-body max-w-[360px] text-ash">{hero.intro}</p>
+<section class="px-5 pb-4 pt-[72px] md:px-6 md:pb-10 md:pt-[88px] lg:px-12 lg:pb-[60px] lg:pt-16">
+  <div class="mx-auto flex max-w-[1536px] flex-col gap-4 lg:gap-6" data-reveal>
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between lg:gap-6" data-reveal="rise">
+      <h1 class="t-hero"><Words text={hero.title} /></h1>
+      <p class="t-small w-[95%] md:w-[300px]">{hero.intro}</p>
     </div>
 
-    <Frame src={hero.image} alt={hero.alt} eager class="mt-8 aspect-[16/9] w-full md:mt-10" sizes="100vw" />
+    <Frame src={hero.image} alt={hero.alt} eager class="aspect-[1.15] w-full md:aspect-[1.8] lg:aspect-[2.35]" sizes="100vw" />
 
-    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-      <ul class="grid grid-cols-2 gap-x-8 gap-y-2 lg:grid-cols-4">
-        {hero.caption.map((c) => <li class="t-meta text-ash">{c}</li>)}
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6 lg:flex-col lg:items-stretch lg:gap-0" data-reveal="rise" style="--reveal-delay:0.12s">
+      <ul class="flex flex-col gap-0.5">
+        {hero.caption.map((c) => <li class="t-meta">{c}</li>)}
       </ul>
-      <p class="t-hero-serif shrink-0 italic"><Words text={hero.serif} /></p>
+      <p class="flex items-end justify-end gap-3 md:gap-5 lg:gap-6">
+        <span class="t-hero-serif"><Words text={hero.serif} /></span>
+        <span class="t-hero"><Words text={hero.sans} /></span>
+      </p>
     </div>
   </div>
 </section>

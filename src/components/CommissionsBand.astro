@@ -1,38 +1,55 @@
 ---
+/** Framer "Commissions" + "Service Row". Hover (spring 0.55s, bounce 0.18): index → blue, title +14px,
+    photo 0×0 → 260×164, copy → 55% opacity. */
 import Words from "./Words.astro"
 import Frame from "./Frame.astro"
 import { commissions } from "@/data/content"
+/** /work shows a different Editorial photo than home and studio, as in Framer. */
+interface Props { page?: "work"; pad?: "home" | "studio" }
+const { page, pad = "home" } = Astro.props
 ---
-<section class="band">
-  <div class="shell">
-    <p class="t-meta text-ash">{commissions.eyebrow}</p>
-    <h2 class="t-l mt-5 max-w-[16ch]">
-      <Words text={commissions.title[0]} />{" "}
-      <span class="t-l-serif italic"><Words text={commissions.title[1]} /></span>
-    </h2>
+<section class={`px-5 py-8 md:px-6 md:py-16 lg:px-12 ${pad === "studio" ? "lg:py-32" : "lg:py-[100px]"}`}>
+  <div class="mx-auto flex max-w-[1536px] flex-col gap-8 lg:gap-12" data-reveal>
+    <div class="flex flex-col gap-4 lg:gap-6" data-reveal="rise">
+      <p class="t-meta accent">{commissions.eyebrow}</p>
+      <h2 class="flex flex-col gap-1">
+        <span class="t-l"><Words text={commissions.title[0]} /></span>
+        <span class="t-l-serif"><Words text={commissions.title[1]} /></span>
+      </h2>
+    </div>
 
-    <ul class="mt-12">
+    <ul class="border-t border-hairline">
       {commissions.services.map((s, i) => (
-        <li
-          class="rule group grid items-center gap-6 py-7 md:grid-cols-[64px_1.1fr_1.6fr_auto]"
-          data-reveal
-          style={`--reveal-delay:${(i * 0.08).toFixed(2)}s`}
-        >
-          <span class="t-meta text-ash">{s.index}</span>
-          <h3 class="t-m">{s.title}</h3>
-          <p class="t-small max-w-[52ch] text-ash">{s.copy}</p>
-          <div class="flex items-center gap-5">
-            <span class="t-meta hidden text-ash lg:block">{s.clients}</span>
-            <Frame
-              src={s.image}
-              alt={`${s.title} commission`}
-              hover={false}
-              sizes="120px"
-              class="h-0 w-0 opacity-0 transition-all duration-500 group-hover:h-[84px] group-hover:w-[120px] group-hover:opacity-100"
-            />
+        <li class="service group flex flex-col items-start gap-4 border-b border-hairline py-6 last:border-b-0 md:flex-row md:items-center md:gap-6 md:py-7" data-reveal="rise" style={`--reveal-delay:${(i * 0.09).toFixed(2)}s`}>
+          <div class="flex items-center md:flex-1">
+            <span class="service-index t-meta w-10 shrink-0">{s.index}</span>
+            <h3 class="service-title t-l md:flex-1">{s.title}</h3>
+          </div>
+          <div class="service-photo">
+            <Frame src={(page === "work" && (s as any).workImage) || s.image} alt={`${s.title} commission`} hover={false} sizes="260px" class="h-full w-full" />
+          </div>
+          <div class="service-copy flex w-full flex-col gap-2.5 md:w-[340px]">
+            <p class="t-small">{s.copy}</p>
+            <p class="t-meta">{s.clients}</p>
           </div>
         </li>
       ))}
     </ul>
   </div>
 </section>
+
+<style>
+  .service-index, .service-title, .service-photo, .service-copy {
+    transition: all 0.55s var(--ease-spring-fast);
+  }
+  .service-photo { width: 0; height: 0; opacity: 0; overflow: hidden; flex-shrink: 0; }
+  @media (max-width: 809.98px) {
+    .service-photo { display: none; }
+  }
+  @media (hover: hover) and (min-width: 810px) {
+    .service:hover .service-index { color: var(--color-blue); }
+    .service:hover .service-title { transform: translateX(14px); }
+    .service:hover .service-photo { width: 260px; height: 164px; opacity: 1; }
+    .service:hover .service-copy { opacity: 0.55; }
+  }
+</style>

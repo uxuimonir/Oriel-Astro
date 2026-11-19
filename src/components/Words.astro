@@ -1,12 +1,11 @@
 ---
-/** Word-by-word rise + blur, same spec as the Framer textEffect (word tokenization, 22px, blur 5px, spring 0.9s, stagger 0.05s). */
+/** Word-by-word rise + blur, same spec as the Framer textEffect (word tokenization, y 22px, blur 5px,
+    spring 0.9s, 0.05s per word). Spaces sit between the word spans so lines wrap exactly like plain text. */
 interface Props { text: string; class?: string; as?: string }
 const { text, class: className = "", as = "span" } = Astro.props
 const Tag = as as any
 const words = text.split(" ")
 ---
-<Tag class={className} data-words>
-  {words.map((w: string, i: number) => (
-    <span style={`transition-delay:${(i * 0.05).toFixed(2)}s`}>{w}{i < words.length - 1 ? " " : ""}</span>
-  ))}
-</Tag>
+<Tag class={className} data-words>{words.map((w: string, i: number) => (
+  <Fragment><span style={`transition-delay:${(i * 0.05).toFixed(2)}s`}>{w}</span>{i < words.length - 1 ? " " : ""}</Fragment>
+))}</Tag>

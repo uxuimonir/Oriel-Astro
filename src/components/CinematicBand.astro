@@ -3,13 +3,17 @@ import Words from "./Words.astro"
 import Frame from "./Frame.astro"
 import { cinematic } from "@/data/content"
 ---
-<section class="relative isolate">
-  <Frame src={cinematic.image} alt={cinematic.alt} hover={false} class="h-[70vh] min-h-[420px] w-full" sizes="100vw" />
-  <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/85 via-night/45 to-transparent"></div>
-  <div class="absolute inset-x-0 bottom-0">
-    <div class="shell pb-10 md:pb-14">
-      <h2 class="t-l max-w-[16ch] text-ondark"><Words text={cinematic.title.join(" ")} /></h2>
-      <p class="t-meta mt-4 text-ondark/60">{cinematic.caption}</p>
-    </div>
+<section class="on-dark bg-dusk px-5 py-8 md:px-6 md:py-16 lg:px-12 lg:py-[100px]" data-reveal>
+  <div class="relative mx-auto flex aspect-[0.8] max-w-[1536px] flex-col justify-end gap-4 overflow-hidden px-5 py-4 md:aspect-[1.3] md:p-6 lg:aspect-[1.78] lg:gap-6 lg:p-12">
+    <Frame src={cinematic.image} alt={cinematic.alt} hover={false} class="!absolute inset-0 h-full w-full" sizes="100vw" />
+    <div aria-hidden="true" class="absolute inset-0" style="background:linear-gradient(0deg, rgba(10,11,12,0.78) 0%, rgba(10,11,12,0.42) 42%, rgba(10,11,12,0) 76%)"></div>
+    <h2 class="relative z-[1] flex flex-col gap-1">
+      <span class="t-l"><Words text={cinematic.title[0]} /></span>
+      <span class="flex flex-wrap items-end gap-2 md:gap-3 lg:gap-4">
+        <span class="t-l"><Words text={cinematic.title[1]} /></span>
+        <span class="t-l-serif"><Words text={cinematic.title[2]} /></span>
+      </span>
+    </h2>
+    <p class="t-meta relative z-[1] w-[84%] md:w-auto">{cinematic.caption}</p>
   </div>
 </section>

@@ -1,12 +1,25 @@
 ---
-interface Props { href: string; variant?: "text" | "outline" | "solid" | "textOnDark"; class?: string }
-const { href, variant = "text", class: className = "" } = Astro.props
-const base = "t-button inline-flex items-center gap-2 transition-colors"
+/**
+ * Framer "Button" component. Variants: primary (Basalt pill), secondary (Salt pill), outline, ghost,
+ * text (blue underline), ghostDark, textDark, light (light pill on dark bands).
+ * Hover: label slides 4px right, 0.3s [0.22,1,0.36,1]; primary fill → Dusk.
+ */
+interface Props { href: string; variant?: "primary" | "secondary" | "outline" | "ghost" | "text" | "ghostDark" | "textDark" | "light"; class?: string; external?: boolean }
+const { href, variant = "text", class: className = "", external = false } = Astro.props
+const pill = "rounded-full px-7 py-[18px]"
 const styles: Record<string, string> = {
-  text: "border-b border-current pb-1 hover:text-blue",
-  textOnDark: "border-b border-current pb-1 hover:text-bluenight",
-  outline: "rounded-[2px] border border-hairline px-5 py-3 hover:border-basalt",
-  solid: "rounded-[2px] bg-basalt px-6 py-4 text-salt hover:bg-dusk",
+  primary: `${pill} bg-basalt text-salt hover:bg-dusk`,
+  secondary: `${pill} bg-paper text-basalt-fixed hover:bg-paperdim`,
+  outline: `${pill} border border-hairline hover:border-basalt`,
+  ghost: "pt-2",
+  text: "border-b border-blue py-1.5",
+  ghostDark: `${pill} border border-hairlinedark text-ondark`,
+  textDark: "border-b border-bluenight py-1.5 text-ondark",
+  light: `${pill} bg-paper text-basalt-fixed hover:bg-paperdim`,
 }
 ---
-<a href={href} class={`${base} ${styles[variant]} ${className}`}><slot /></a>
+<a
+  href={href}
+  class={`btn t-button inline-flex items-center justify-center gap-2.5 transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${styles[variant]} ${className}`}
+  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+><span class="btn-label"><slot /></span></a>

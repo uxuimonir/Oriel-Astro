@@ -1,24 +1,39 @@
 ---
-import SectionHead from "./SectionHead.astro"
+/** Framer "Voices" + "Quote Card": 140px square portrait, Lead quote. Hover: portrait 1.05 (spring 0.55s). */
+import Words from "./Words.astro"
 import Frame from "./Frame.astro"
 import { voices } from "@/data/content"
+interface Props { pad?: "home" | "journal" | "studio" }
+const { pad = "home" } = Astro.props
+/** Framer pads this band differently on each page (phone / tablet / desktop). */
+const pads = { home: "px-5 py-10 md:px-6 md:py-20 lg:px-12 lg:pb-[100px] lg:pt-[60px]", journal: "px-5 py-10 md:px-6 md:py-20 lg:px-12 lg:py-32", studio: "px-5 py-20 md:px-8 md:py-24 lg:px-12 lg:py-32" }
 ---
-<section class="band bg-dusk text-ondark">
-  <div class="shell">
-    <SectionHead eyebrow={voices.eyebrow} title={voices.title} body={voices.body} dark />
-    <ul class="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 md:mt-16 lg:gap-x-16">
+<section class={`on-dark bg-dusk ${pads[pad]}`} data-reveal>
+  <div class="mx-auto flex max-w-[1536px] flex-col gap-8 lg:gap-12">
+    <p class="t-meta accent">{voices.eyebrow}</p>
+    <div class="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-end md:gap-8 lg:gap-10">
+      <h2 class="flex max-w-[760px] flex-1 flex-col gap-1">
+        <span class="t-l"><Words text={voices.title[0]} /></span>
+        <span class="t-l-serif"><Words text={voices.title[1]} /></span>
+      </h2>
+      <p class="t-small md:w-[320px]">{voices.body}</p>
+    </div>
+    <ul class="grid gap-x-7 gap-y-9 md:grid-cols-2 md:gap-x-9 md:gap-y-12 lg:gap-x-12 lg:gap-y-16">
       {voices.quotes.map((q, i) => (
-        <li data-reveal style={`--reveal-delay:${(i * 0.09).toFixed(2)}s`}>
-          <figure>
-            <Frame src={q.portrait} alt="" class="aspect-[4/3] w-[72px]" sizes="72px" />
-            <blockquote class="t-body mt-5 max-w-[34ch] text-ondark/90">{q.quote}</blockquote>
-            <figcaption class="mt-5">
-              <span class="t-small block">{q.name}</span>
-              <span class="t-meta mt-1 block text-ashnight">{q.role}</span>
-            </figcaption>
-          </figure>
+        <li class="voice flex flex-col gap-[18px]" data-reveal="rise" style={`--reveal-delay:${(i * 0.08).toFixed(2)}s`}>
+          <div class="h-[140px] w-[140px] overflow-hidden">
+            <Frame src={q.portrait} alt="" hover={false} class="voice-portrait h-full w-full" sizes="140px" />
+          </div>
+          <blockquote class="t-lead">{q.quote}</blockquote>
+          <p class="t-small">{q.name}</p>
+          <p class="t-meta w-[93%]">{q.role}</p>
         </li>
       ))}
     </ul>
   </div>
 </section>
+
+<style>
+  .voice-portrait { transition: transform 0.55s var(--ease-spring-fast); }
+  .voice:hover .voice-portrait { transform: scale(1.05); }
+</style>

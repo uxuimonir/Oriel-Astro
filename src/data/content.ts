@@ -29,7 +29,8 @@ export const site = {
 
 export const hero = {
   title: "Light,",
-  serif: "held still.",
+  serif: "held",
+  sans: "still.",
   intro: site.tagline,
   image: img("zwsYwNmeZv4H9cJEPOpu8PkMw.png"),
   alt: "A camera framing a fiery mountain sunset over a still lake.",
@@ -62,6 +63,8 @@ export interface Project {
   number: string
   title: string
   slug: string
+  /** Framer CMS "Meta": the short line beside the series number on its page. */
+  meta: string
   kind: string
   location: string
   year: string
@@ -86,6 +89,7 @@ export const projects: Project[] = [
     number: "N°01 — Portrait series",
     title: "Tide Tables",
     slug: "tide-tables",
+    meta: "Portraits · 2025",
     kind: "Portrait series",
     location: "Póvoa de Varzim, Portugal",
     year: "2025",
@@ -123,6 +127,7 @@ export const projects: Project[] = [
     number: "N°02 — Fashion editorial",
     title: "Low Cloud",
     slug: "low-cloud",
+    meta: "Editorial · 2024",
     kind: "Fashion editorial",
     location: "Salzkammergut, Austria",
     year: "2024",
@@ -160,6 +165,7 @@ export const projects: Project[] = [
     number: "N°03 — Travel · location",
     title: "Sea Hours",
     slug: "sea-hours",
+    meta: "Landscape · 2025",
     kind: "Travel",
     location: "São Miguel, Azores",
     year: "2025",
@@ -197,6 +203,7 @@ export const projects: Project[] = [
     number: "N°04 — Commercial campaign",
     title: "The Salt Line",
     slug: "salt-line",
+    meta: "Campaign · 2024",
     kind: "Commercial campaign",
     location: "Namib coast",
     year: "2024",
@@ -234,6 +241,7 @@ export const projects: Project[] = [
     number: "N°05 — Urban documentary",
     title: "After Midnight",
     slug: "after-midnight",
+    meta: "Documentary · 2023",
     kind: "Urban documentary",
     location: "Lisbon",
     year: "2023",
@@ -271,6 +279,7 @@ export const projects: Project[] = [
     number: "N°06 — Personal study",
     title: "Limewash",
     slug: "limewash",
+    meta: "Study · 2025",
     kind: "Personal study",
     location: "Alentejo, Andalusia, Cyclades",
     year: "2025",
@@ -307,7 +316,7 @@ export const projects: Project[] = [
 
 export const work = {
   eyebrow: "10:00 — Selected work",
-  title: ["Six stories,", "one kind of light."],
+  title: ["Six stories,", "one", "kind of light."],
   body:
     "Portraits, an editorial, a landscape series, a campaign, a documentary and a study, 2023–2025. Each was made in one place, at one hour, over as many days as it took.",
   indexLink: "Every frame, in one index →",
@@ -321,14 +330,17 @@ export const workIndex = {
   filters: ["All", "01 Tide Tables", "02 Low Cloud", "03 Sea Hours", "04 The Salt Line", "05 After Midnight", "06 Limewash"],
 }
 
-export const ticker = "06:52 first light · 12:40 white sky · 18:40 golden hour · 21:30 blue hour"
+export const ticker = {
+  headline: "First light · White sky · Golden hour · Blue hour · First light",
+  times: "06:52 first light · 12:40 white sky · 18:40 golden hour · 21:30 blue hour ·",
+}
 
 export const commissions = {
   eyebrow: "12:40 — Commissions",
   title: ["Four ways to", "work together."],
   services: [
     { index: "01", title: "Portrait", copy: "People photographed in the light they already live in: doorways, workshops, wheelhouses.", clients: "Fold Quarterly, private commissions", image: img("W6iwY1zPdGxS4BrAM1eoN6zF2g.jpg") },
-    { index: "02", title: "Editorial", copy: "Fashion and stories for magazines, made on location over days, not hours.", clients: "Northlight Review, Fold Quarterly", image: img("wZ12DSmk5YPDzAsrfWtq4kvryTk.jpg") },
+    { index: "02", title: "Editorial", copy: "Fashion and stories for magazines, made on location over days, not hours.", clients: "Northlight Review, Fold Quarterly", image: img("plFr1yqMNw5Wq7v99MVVixB4sIo.jpg"), workImage: img("wZ12DSmk5YPDzAsrfWtq4kvryTk.jpg") },
     { index: "03", title: "Documentary", copy: "Long stories about places, told through the people who keep them running.", clients: "Galeria Maré, Público Magazine", image: img("5790aA68j4g4yAQ20buDGxd64.webp") },
     { index: "04", title: "Campaign", copy: "Brand work for companies that can wait for the weather: outerwear, hotels, wine.", clients: "Merid Outerwear, Casa Ferro Wines", image: img("sVld9fMuxOJrBZMxN54Ao9lA.jpg") },
   ],
@@ -336,7 +348,7 @@ export const commissions = {
 
 export const about = {
   eyebrow: "15:30 — About Mira",
-  title: ["I grew up in a flat in Porto", "with one good window."],
+  title: ["I grew up in a flat in Porto", "with one", "good window."],
   paragraphs: [
     "It faced west over the river. My grandmother kept a chair in it and moved the chair through the day to stay in the sun. I think I learned to see by watching her follow the light around one room.",
     "The studio is named after that window. I started it in Lisbon in 2014 after six years assisting architectural photographers, and I still work the way they taught me: a tripod, a large camera, and a lot of standing still.",
@@ -358,7 +370,7 @@ export const about = {
 
 export const studioHero = {
   eyebrow: "Studio · Lisbon, since 2014",
-  title: ["One photographer,", "one good window."],
+  title: ["One photographer,", "one good", "window."],
   body:
     "Oriel is Mira Castell and whoever is carrying the second bag that week. Portraits, places and weather, in natural light, for magazines, architects, hotels and brands that can wait for the weather.",
   facts: [
@@ -586,7 +598,7 @@ export const voices = {
 
 export const rates = {
   eyebrow: "19:30 — Rates, 2026–27",
-  title: ["Priced by the day,", "not by the frame."],
+  title: ["Priced by the day,", "not", "by the frame."],
   note:
     "Travel and accommodation are billed at cost. Every commission starts with a call about the place, the season and the light — not a brief.",
   plans: [
@@ -612,7 +624,7 @@ export const faq = {
 
 export const contact = {
   eyebrow: "21:30 — Contact · blue hour",
-  title: ["Bring me", "somewhere", "worth waiting for."],
+  title: ["Bring me", "somewhere", "worth waiting", "for."],
   body:
     "Tell me about the place, the season and what the light does there. I'll tell you honestly whether it's worth the wait.",
   availability: "Taking commissions for spring 2027",
@@ -626,27 +638,6 @@ export const contact = {
   image: img("jouZtiy8EqzzQX7ZzPHiR2tlyY.jpg"),
   alt: "A lighthouse in silhouette against a burning sunset sky.",
   caption: "21:30 — The lighthouse, first beam of the night",
-  fields: [
-    { label: "Your name", name: "name", type: "text", placeholder: "Mira Castell" },
-    { label: "Email", name: "email", type: "email", placeholder: "you@studio.com" },
-    { label: "The place", name: "place", type: "text", placeholder: "Where, and in what season?" },
-    { label: "The note", name: "note", type: "textarea", placeholder: "Tell me what the light does there." },
-  ],
-  submit: "Send the note",
-}
-
-export const brief = {
-  eyebrow: "Before you write",
-  title: ["Five things", "to send."],
-  body:
-    "A short note is plenty. I answer every message myself, usually the same evening, and I'll tell you honestly if the light you want isn't there.",
-  items: [
-    { index: "01", title: "The place", copy: "Where it is, and what the light does there. A phone photo at the right hour helps more than a moodboard." },
-    { index: "02", title: "The season", copy: "This season, next season, within a year — or flexible, and the weather decides." },
-    { index: "03", title: "The kind of work", copy: "Portrait, editorial, documentary, campaign, editions and prints — or something else entirely." },
-    { index: "04", title: "A budget range", copy: "Under €5,000 · €5,000–15,000 · €15,000–40,000 · over €40,000 · not sure yet." },
-    { index: "05", title: "Where the photographs will live", copy: "Editorial, web, campaign or print — so the licence fits from the start." },
-  ],
 }
 
 export const notFound = {
@@ -671,6 +662,7 @@ export const footer = {
         { label: "Rates", href: "/studio#rates" },
         { label: "Journal", href: "/journal" },
         { label: "Contact", href: "/contact" },
+        { label: "Photo credits" },
       ],
     },
   ],
@@ -678,5 +670,5 @@ export const footer = {
   letter: "One letter a season: where the light was good, and what it taught me. No more than four a year.",
   legal:
     "© 2026 Oriel — Mira Castell, a fictional studio. Photographs are free-licence work by the photographers named in the credits.",
-  back: "Back to first light ↑",
+  back: "Back to Top ↑",
 }

@@ -1,20 +1,20 @@
 ---
+/** Framer "Journal Feature": 58% image (3:2, 426px), text column aligned to the bottom. */
 import Frame from "./Frame.astro"
+import Words from "./Words.astro"
 import type { Post } from "@/data/content"
 import { journal } from "@/data/content"
 interface Props { post: Post }
 const { post } = Astro.props
 ---
-<article class="grid gap-6 md:grid-cols-[1.15fr_1fr] md:gap-10 lg:gap-16" data-reveal>
-  <a href={`/journal/${post.slug}`} class="group block">
-    <Frame src={post.cover} alt={post.coverAlt} eager class="aspect-[3/2] w-full" sizes="(min-width:810px) 55vw, 100vw" />
+<article class="flex flex-col gap-12 md:flex-row md:items-end">
+  <a href={`/journal/${post.slug}`} class="block md:w-[58%]" aria-label={post.title}>
+    <Frame src={post.cover} alt={post.coverAlt} eager class="aspect-[1.5] w-full" style="--frame-from:1.03;--frame-dur:1.1s" sizes="(min-width:810px) 58vw, 100vw" />
   </a>
-  <div class="flex flex-col justify-center">
-    <p class="t-meta text-ash">{post.featureMeta}</p>
-    <h2 class="t-m mt-4 max-w-[16ch] text-[26px] md:text-[30px] lg:text-[34px]">
-      <a href={`/journal/${post.slug}`} class="transition-colors hover:text-blue">{post.title}</a>
-    </h2>
-    <p class="t-body mt-4 max-w-[42ch] text-ash">{post.standfirst}</p>
-    <a href={`/journal/${post.slug}`} class="t-meta mt-7 inline-block self-start border-b border-current pb-1 transition-colors hover:text-blue">{journal.read}</a>
+  <div class="flex flex-col items-start gap-4 md:flex-1">
+    <p class="t-meta accent">{post.featureMeta}</p>
+    <h2 class="t-m"><a href={`/journal/${post.slug}`}><Words text={post.title} /></a></h2>
+    <p class="t-lead">{post.standfirst}</p>
+    <a href={`/journal/${post.slug}`} class="btn t-button border-b border-blue py-1"><span class="btn-label">{journal.read}</span></a>
   </div>
 </article>

@@ -1,17 +1,29 @@
 ---
+/** Framer "Journal Row". Date 90 · title (Lead) · category 110 · read 50 · 64px thumb.
+    Hover (0.45s): title +8px, thumb grows to 200×126 and slides 220px left over the row. */
 import Frame from "./Frame.astro"
 import type { Post } from "@/data/content"
-interface Props { post: Post; delay?: number; full?: boolean }
-const { post, delay = 0, full = false } = Astro.props
+interface Props { post: Post; delay?: number }
+const { post, delay = 0 } = Astro.props
 ---
-<li class="rule" data-reveal style={`--reveal-delay:${delay}s`}>
-  <a href={`/journal/${post.slug}`} class="group grid items-center gap-5 py-6 md:grid-cols-[1.8fr_auto_auto_96px]">
-    <div>
-      <h3 class="t-m text-[22px] transition-colors group-hover:text-blue md:text-[26px]">{post.title}</h3>
-      {full && <p class="t-small mt-2 max-w-[60ch] text-ash">{post.standfirst}</p>}
-    </div>
-    <span class="t-meta text-ash">{post.category}</span>
-    <span class="t-meta text-ash">{post.dateLabel} · {post.read}</span>
-    <Frame src={post.cover} alt={post.coverAlt} hover={false} sizes="96px" class="hidden aspect-[4/3] w-24 opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:block" />
+<li class="border-b border-hairline" data-reveal="rise" style={`--reveal-delay:${delay}s`}>
+  <a href={`/journal/${post.slug}`} class="jrow group relative flex flex-wrap items-center gap-4 py-5 md:flex-nowrap md:gap-6">
+    <span class="t-meta w-[76px] shrink-0 md:w-[90px]">{post.dateLabel}</span>
+    <span class="jrow-title t-lead min-w-0 flex-1">{post.title}</span>
+    <span class="t-meta hidden w-[110px] shrink-0 md:block">{post.category}</span>
+    <span class="t-meta hidden w-[50px] shrink-0 md:block">{post.read}</span>
+    <span class="jrow-thumb relative z-[3] block shrink-0">
+      <Frame src={post.cover} alt="" hover={false} sizes="200px" class="h-full w-full" style="--frame-from:1.03;--frame-dur:1.1s" />
+    </span>
   </a>
 </li>
+
+<style>
+  .jrow-title, .jrow-thumb { transition: all 0.45s var(--ease-out); }
+  .jrow-thumb { width: 48px; height: 48px; }
+  @media (min-width: 810px) { .jrow-thumb { width: 64px; height: 64px; } }
+  @media (hover: hover) and (min-width: 810px) {
+    .jrow:hover .jrow-title { transform: translateX(8px); }
+    .jrow:hover .jrow-thumb { width: 200px; height: 126px; margin-block: -31px; transform: translateX(-220px); }
+  }
+</style>

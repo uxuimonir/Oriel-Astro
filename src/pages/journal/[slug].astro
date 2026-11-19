@@ -2,59 +2,73 @@
 import Base from "@/layouts/Base.astro"
 import Words from "@/components/Words.astro"
 import Frame from "@/components/Frame.astro"
-import JournalRow from "@/components/JournalRow.astro"
-import ContactBand from "@/components/ContactBand.astro"
+import Button from "@/components/Button.astro"
 import { journal, posts } from "@/data/content"
 
+/** Framer "More Band": the four newest entries, newest first. */
+const latest = [...posts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4)
 export function getStaticPaths() {
-  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p, more: posts.filter((x) => x.slug !== p.slug).slice(0, 3) } }))
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }))
 }
-const { post, more } = Astro.props
+const { post } = Astro.props
+const pad = "px-5 md:px-6 lg:px-12"
+/** The article header spells the date out ("14 March 2026"), as in Framer. */
+const longDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(post.date))
 ---
 <Base title={`${post.title} | Oriel Journal`} description={post.standfirst} image={post.cover}>
   <article>
-    <header class="band pt-10 md:pt-16">
-      <div class="shell max-w-[860px]">
-        <p class="t-meta text-ash">
-          {post.category} · <time datetime={post.date}>{post.dateLabel}</time> · {post.read} read
+    <header class={`${pad} pb-5 pt-[72px] md:pb-6 md:pt-[88px] lg:pb-12 lg:pt-20`} data-reveal="rise">
+      <div class="mx-auto flex max-w-[1536px] flex-col items-start gap-4 lg:gap-6" data-reveal>
+        <Button href="/journal">← Journal</Button>
+        <p class="t-meta accent flex flex-wrap gap-[5px]">
+          {post.category}<span>·</span><time datetime={post.date}>{longDate}</time><span>·</span>{post.read}<span>read</span>
         </p>
-        <h1 class="t-xl mt-6"><Words text={post.title} /></h1>
-        <p class="t-lead mt-8 max-w-[52ch] text-ash">{post.standfirst}</p>
+        <h1 class="t-xl max-w-[1000px]"><Words text={post.title} /></h1>
+        <p class="t-lead max-w-[720px]">{post.standfirst}</p>
       </div>
     </header>
 
-    <figure class="pb-16 md:pb-24">
-      <div class="shell">
+    <figure class={pad} data-reveal>
+      <div class={`mx-auto flex flex-col gap-3 ${post.portraitCover ? "max-w-[720px]" : "max-w-[1536px]"}`}>
         <Frame
           src={post.cover}
           alt={post.coverAlt}
           eager
-          sizes="100vw"
-          class={post.portraitCover ? "mx-auto aspect-[4/5] w-full max-w-[760px]" : "aspect-[16/9] w-full"}
+          style="--frame-from:1.04;--frame-dur:1.1s"
+          sizes={post.portraitCover ? "720px" : "100vw"}
+          class={post.portraitCover ? "aspect-[0.8] w-full" : "aspect-[1.5] w-full"}
         />
-        <figcaption class="t-meta mt-3 text-ash">{post.caption}</figcaption>
+        <figcaption class="t-meta">{post.caption}</figcaption>
       </div>
     </figure>
 
-    <section class="pb-[72px] md:pb-[120px]">
-      <div class="shell max-w-[720px]">
+    <section class={`${pad} pb-6 pt-4 md:pb-12 md:pt-10 lg:pb-[120px] lg:pt-24`} data-reveal="rise">
+      <div class="mx-auto flex max-w-[680px] flex-col gap-4 lg:gap-6" data-reveal>
         <p class="t-lead">{post.intro}</p>
-        {post.paragraphs.map((para, i) => (
-          <p class="t-body mt-6 text-ash" data-reveal style={`--reveal-delay:${(i * 0.07).toFixed(2)}s`}>{para}</p>
-        ))}
-        <p class="t-meta mt-12 text-ash">{post.signature}</p>
+        {post.paragraphs.map((para) => <p class="t-body">{para}</p>)}
+        <p class="t-meta">{post.signature}</p>
       </div>
     </section>
 
-    <section class="band bg-stone/50">
-      <div class="shell">
-        <p class="t-meta text-ash">{journal.more}</p>
-        <ul class="mt-8">
-          {more.map((p, i) => <JournalRow post={p} delay={Number((i * 0.07).toFixed(2))} />)}
+    <section class={`bg-stone ${pad} py-8 md:pb-16 md:pt-12 lg:pb-[120px] lg:pt-24`} data-reveal>
+      <div class="mx-auto flex max-w-[1536px] flex-col gap-4 md:gap-6 lg:gap-8" data-reveal="rise">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p class="t-meta accent">{journal.more}</p>
+          <Button href="/journal">All entries →</Button>
+        </div>
+        <ul>
+          {latest.map((p) => (
+            <li>
+              <a href={`/journal/${p.slug}`} class="group flex flex-wrap items-center gap-4 border-t border-hairline py-6 md:flex-nowrap md:gap-6">
+                <span class="t-meta w-[90px] shrink-0">{p.dateLabel}</span>
+                <span class="t-lead card-title min-w-0 flex-1">{p.title}</span>
+                <span class="t-meta hidden w-[110px] shrink-0 md:block">{p.category}</span>
+                <span class="t-meta hidden w-[50px] shrink-0 md:block">{p.read}</span>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
   </article>
-
-  <ContactBand />
 </Base>

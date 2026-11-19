@@ -11,21 +11,20 @@ const rows = journal.homeRows
   })
   .filter(Boolean) as typeof posts
 ---
-<section class="band">
-  <div class="shell">
-    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <h2 class="t-l max-w-[14ch]">
-        <Words text={journal.title[0]} />{" "}
-        <span class="t-l-serif italic"><Words text={journal.title[1]} /></span>
-      </h2>
-      <p class="t-body max-w-[420px] text-ash">{journal.bodyHome}</p>
+<section class="px-5 py-8 md:px-6 md:py-16 lg:px-12 lg:py-[100px]">
+  <div class="mx-auto flex max-w-[1536px] flex-col gap-8 lg:gap-12" data-reveal>
+    <div class="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end md:justify-between md:gap-8 lg:gap-10" data-reveal="rise">
+      <div class="flex max-w-[760px] flex-1 flex-col gap-4 lg:gap-6">
+        <p class="t-meta accent">{journal.eyebrow}</p>
+        <h2 class="flex flex-col gap-1">
+          <span class="t-l"><Words text={journal.title[0]} /></span>
+          <span class="t-l-serif"><Words text={journal.title[1]} /></span>
+        </h2>
+      </div>
+      <p class="t-small md:w-[320px]">{journal.bodyHome}</p>
     </div>
-    <ul class="mt-12">
+    <ul class="border-t border-hairline">
       {rows.map((p, i) => <JournalRow post={p} delay={Number((i * 0.07).toFixed(2))} />)}
     </ul>
-    <a href="/journal" class="t-small mt-10 inline-flex items-center gap-2 border-b border-current pb-1 transition-colors duration-300 hover:text-blue">
-      {journal.more}
-      <span aria-hidden="true">→</span>
-    </a>
   </div>
 </section>

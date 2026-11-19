@@ -1,30 +1,22 @@
 ---
+/** Framer "Project Card": Portrait (660), Landscape (360), Feature (520). Hover: photo 1.05, title +6px, 0.6s. */
 import Frame from "./Frame.astro"
 import type { Project } from "@/data/content"
-interface Props { project: Project; delay?: number; ratio?: string; sizes?: string }
-const {
-  project: p,
-  delay = 0,
-  ratio = "aspect-[4/5] lg:aspect-[3/2]",
-  sizes = "(min-width:1200px) 58vw, (min-width:810px) 50vw, 100vw",
-} = Astro.props
+interface Props { project: Project; shape: "portrait" | "landscape" | "feature"; sizes?: string }
+const { project: p, shape, sizes = "(min-width:1200px) 50vw, 100vw" } = Astro.props
+/** Tablet and phone use the Landscape variant (360px) for every card, as in Framer. */
+const media = { portrait: "h-[360px] lg:h-[660px]", landscape: "h-[360px]", feature: "h-[360px] lg:h-[520px]" }[shape]
 const meta = [p.kind, p.location, p.year].filter(Boolean).join(" · ")
 ---
-<a href={`/work/${p.slug}`} class="group flex h-full flex-col" data-reveal style={`--reveal-delay:${delay}s`}>
-  <Frame
-    src={p.images[0].src}
-    alt={`${p.title} — ${p.intro}`}
-    class={`w-full ${ratio}`}
-    sizes={sizes}
-  />
-  <div class="mt-5 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
-    <h3 class="t-m text-[26px] leading-none transition-colors group-hover:text-blue md:text-[32px] lg:text-[38px]">{p.title}</h3>
-    <span class="t-meta shrink-0 text-blue">{p.code}</span>
+<a href={`/work/${p.slug}`} class="group flex w-full flex-col gap-3.5">
+  <Frame src={p.images[shape === "feature" ? 3 : 0].src} alt={`${p.title} — ${p.intro}`} class={`card-photo w-full ${media}`} hover={false} sizes={sizes} />
+  <p class="t-meta accent">{p.code}</p>
+  <div class="border-b border-hairline pb-4">
+    <h3 class="t-m card-title">{p.title}</h3>
   </div>
-  <p class="t-meta mt-3 text-ash">{meta}</p>
-  <p class="t-small mt-2 max-w-[46ch] text-ash">{p.intro}</p>
-  <span class="t-small mt-4 inline-flex items-center gap-2 self-start border-b border-current pb-0.5 transition-colors group-hover:text-blue">
-    Open series
-    <span aria-hidden="true" class="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">→</span>
-  </span>
+  <div class="flex flex-col items-start gap-3">
+    <p class="t-meta">{meta}</p>
+    <p class={`t-small max-w-[460px] ${shape === "feature" ? "lg:max-w-[640px]" : ""}`}>{p.intro}</p>
+    <span class="btn t-button inline-flex border-b border-blue py-1.5"><span class="btn-label">Open series →</span></span>
+  </div>
 </a>

@@ -1,5 +1,6 @@
 import { readdir, readFile, rm, stat } from "node:fs/promises"
 import { join, relative } from "node:path"
+import { fileURLToPath } from "node:url"
 
 const TEXT = /\.(html|css|js|xml|json|txt|webmanifest)$/i
 const IMAGE = /\.(jpe?g|png|webp|avif|gif|svg)$/i
@@ -24,7 +25,7 @@ export default function pruneUnusedImages() {
     name: "oriel:prune-unused-images",
     hooks: {
       "astro:build:done": async ({ dir, logger }) => {
-        const root = dir.pathname
+        const root = fileURLToPath(dir)
         const files = await walk(root)
         let haystack = ""
         for (const file of files) {

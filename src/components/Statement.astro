@@ -1,26 +1,23 @@
 ---
 import Frame from "./Frame.astro"
-import Reveal from "./Reveal.astro"
+import Words from "./Words.astro"
 import { statement } from "@/data/content"
 ---
-<section class="band">
-  <div class="shell">
-    <div class="grid gap-12 lg:grid-cols-[1.4fr_0.9fr]">
-      <Reveal>
-        <p class="t-meta text-ash">{statement.eyebrow}</p>
-        <p class="t-m mt-6 max-w-[22ch]">{statement.body}</p>
-      </Reveal>
-      <Reveal as="figure" delay={0.08}>
-        <Frame src={statement.image} alt={statement.alt} class="aspect-[4/5] w-full" sizes="(min-width:1200px) 30vw, 100vw" />
-        <figcaption class="t-meta mt-3 text-ash">{statement.caption}</figcaption>
-      </Reveal>
+<section class="px-5 py-8 md:px-6 md:py-16 lg:h-[880px] lg:px-12 lg:py-32">
+  <div class="mx-auto flex max-w-[1536px] flex-col gap-10 md:flex-row md:flex-wrap md:gap-12 lg:gap-16" data-reveal>
+    <div class="flex flex-col gap-4 md:flex-1 lg:gap-6" data-reveal="rise">
+      <p class="t-meta accent">{statement.eyebrow}</p>
+      <p class="t-m"><Words text={statement.body} /></p>
     </div>
-
-    <ul class="rule mt-16 grid gap-10 pt-10 sm:grid-cols-3">
+    <figure class="flex flex-col gap-3 md:w-[280px] lg:w-[360px]">
+      <Frame src={statement.image} alt={statement.alt} class="h-[420px] w-full md:h-[350px] lg:h-[450px]" style="--frame-from:1.03;--frame-dur:1.1s" sizes="(min-width:810px) 360px, 100vw" />
+      <figcaption class="t-meta">{statement.caption}</figcaption>
+    </figure>
+    <ul class="flex w-full flex-col gap-5 md:flex-row md:gap-0 md:border-t md:border-hairline">
       {statement.stats.map((s, i) => (
-        <li data-reveal style={`--reveal-delay:${(i * 0.1).toFixed(2)}s`}>
-          <p class="t-l tnum" data-count={s.figure}>{s.figure}</p>
-          <p class="t-small mt-2 max-w-[22ch] text-ash">{s.label}</p>
+        <li class={`flex min-w-0 flex-1 flex-col gap-2.5 border-t border-hairline pt-4 md:border-t-0 md:pr-6 md:pt-7 ${i ? "md:border-l md:pl-8" : ""}`}>
+          <p class="t-m tnum" data-count={s.figure}>{s.figure}</p>
+          <p class="t-meta">{s.label}</p>
         </li>
       ))}
     </ul>

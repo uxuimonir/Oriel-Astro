@@ -54,7 +54,7 @@ const ogImage = new URL(og.src, Astro.site ?? site.url).toString()
   <body id="top">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-basalt focus:px-4 focus:py-2 focus:text-salt">Skip to content</a>
     <Nav />
-    <main id="main" class="pt-16"><slot /></main>
+    <main id="main" class="pt-[54px] md:pt-[62px]"><slot /></main>
     <Footer />
 
     <script>
