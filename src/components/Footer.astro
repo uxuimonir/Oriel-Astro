@@ -1,0 +1,38 @@
+---
+import { footer, site } from "@/data/content"
+---
+<footer class="bg-night text-ondark">
+  <div class="shell py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr_1.2fr]">
+      <div class="max-w-[340px]">
+        <p class="t-logo flex items-center gap-2">
+          <span aria-hidden="true" class="inline-block h-3.5 w-3.5 rounded-t-full border border-ondark"></span>
+          {site.name}
+        </p>
+        <p class="t-small mt-4 text-ashnight">{footer.blurb}</p>
+      </div>
+
+      {footer.columns.map((col) => (
+        <nav aria-label={col.title}>
+          <p class="t-meta text-ashnight">{col.title}</p>
+          <ul class="mt-4 space-y-2.5">
+            {col.links.map((l) => (
+              <li><a href={l.href} class="t-small link-quiet text-ondark/85">{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+
+      <div>
+        <p class="t-meta text-ashnight">{footer.letterTitle}</p>
+        <p class="t-small mt-4 text-ashnight">{footer.letter}</p>
+        <a href={site.instagram} rel="noopener noreferrer" target="_blank" class="t-small link-quiet mt-5 inline-block">Instagram ↗</a>
+      </div>
+    </div>
+
+    <div class="rule-dark mt-14 flex flex-col gap-4 pt-6 md:flex-row md:items-center md:justify-between">
+      <p class="t-meta max-w-[760px] text-ashnight">{footer.legal}</p>
+      <a href="#top" class="t-meta link-quiet text-ondark">{footer.back}</a>
+    </div>
+  </div>
+</footer>

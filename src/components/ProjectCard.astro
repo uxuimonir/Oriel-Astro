@@ -1,0 +1,30 @@
+---
+import Frame from "./Frame.astro"
+import type { Project } from "@/data/content"
+interface Props { project: Project; delay?: number; ratio?: string; sizes?: string }
+const {
+  project: p,
+  delay = 0,
+  ratio = "aspect-[4/5] lg:aspect-[3/2]",
+  sizes = "(min-width:1200px) 58vw, (min-width:810px) 50vw, 100vw",
+} = Astro.props
+const meta = [p.kind, p.location, p.year].filter(Boolean).join(" · ")
+---
+<a href={`/work/${p.slug}`} class="group flex h-full flex-col" data-reveal style={`--reveal-delay:${delay}s`}>
+  <Frame
+    src={p.images[0].src}
+    alt={`${p.title} — ${p.intro}`}
+    class={`w-full ${ratio}`}
+    sizes={sizes}
+  />
+  <div class="mt-5 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
+    <h3 class="t-m text-[26px] leading-none transition-colors group-hover:text-blue md:text-[32px] lg:text-[38px]">{p.title}</h3>
+    <span class="t-meta shrink-0 text-blue">{p.code}</span>
+  </div>
+  <p class="t-meta mt-3 text-ash">{meta}</p>
+  <p class="t-small mt-2 max-w-[46ch] text-ash">{p.intro}</p>
+  <span class="t-small mt-4 inline-flex items-center gap-2 self-start border-b border-current pb-0.5 transition-colors group-hover:text-blue">
+    Open series
+    <span aria-hidden="true" class="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">→</span>
+  </span>
+</a>

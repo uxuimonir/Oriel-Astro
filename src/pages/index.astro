@@ -1,0 +1,33 @@
+---
+import Base from "@/layouts/Base.astro"
+import Hero from "@/components/Hero.astro"
+import Statement from "@/components/Statement.astro"
+import SelectedWork from "@/components/SelectedWork.astro"
+import Ticker from "@/components/Ticker.astro"
+import CommissionsBand from "@/components/CommissionsBand.astro"
+import AboutBand from "@/components/AboutBand.astro"
+import JournalBand from "@/components/JournalBand.astro"
+import CinematicBand from "@/components/CinematicBand.astro"
+import VoicesBand from "@/components/VoicesBand.astro"
+import RatesBand from "@/components/RatesBand.astro"
+import FaqBand from "@/components/FaqBand.astro"
+import ContactBand from "@/components/ContactBand.astro"
+import { site } from "@/data/content"
+---
+<Base
+  title="Oriel — Natural-light photography by Mira Castell"
+  description={site.tagline}
+>
+  <Hero />
+  <Statement />
+  <SelectedWork />
+  <Ticker />
+  <CommissionsBand />
+  <AboutBand />
+  <JournalBand />
+  <CinematicBand />
+  <VoicesBand />
+  <RatesBand />
+  <FaqBand />
+  <ContactBand />
+</Base>

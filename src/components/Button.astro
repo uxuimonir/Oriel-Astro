@@ -1,0 +1,12 @@
+---
+interface Props { href: string; variant?: "text" | "outline" | "solid" | "textOnDark"; class?: string }
+const { href, variant = "text", class: className = "" } = Astro.props
+const base = "t-button inline-flex items-center gap-2 transition-colors"
+const styles: Record<string, string> = {
+  text: "border-b border-current pb-1 hover:text-blue",
+  textOnDark: "border-b border-current pb-1 hover:text-bluenight",
+  outline: "rounded-[2px] border border-hairline px-5 py-3 hover:border-basalt",
+  solid: "rounded-[2px] bg-basalt px-6 py-4 text-salt hover:bg-dusk",
+}
+---
+<a href={href} class={`${base} ${styles[variant]} ${className}`}><slot /></a>

@@ -1,0 +1,22 @@
+---
+import Base from "@/layouts/Base.astro"
+import Words from "@/components/Words.astro"
+import { notFound } from "@/data/content"
+---
+<Base title="Page not found | Oriel" description={notFound.body} noindex>
+  <section class="flex min-h-[74vh] items-center bg-night py-24 text-ondark md:min-h-[78vh]">
+    <div class="shell">
+      <p class="t-meta text-bluenight">{notFound.eyebrow}</p>
+      <h1 class="t-hero mt-6 max-w-[10ch]">
+        <Words text={notFound.title[0]} />{" "}
+        <span class="t-hero-serif italic"><Words text={notFound.title[1]} /></span>
+      </h1>
+      <p class="t-body mt-8 max-w-[42ch] text-ondark/85">{notFound.body}</p>
+      <div class="mt-10 flex flex-wrap gap-8">
+        {notFound.links.map((l) => (
+          <a href={l.href} class="t-small border-b border-current pb-1 transition-colors duration-300 hover:text-bluenight">{l.label}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

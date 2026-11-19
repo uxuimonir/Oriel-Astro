@@ -1,0 +1,60 @@
+---
+import Base from "@/layouts/Base.astro"
+import Words from "@/components/Words.astro"
+import Frame from "@/components/Frame.astro"
+import JournalRow from "@/components/JournalRow.astro"
+import ContactBand from "@/components/ContactBand.astro"
+import { journal, posts } from "@/data/content"
+
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p, more: posts.filter((x) => x.slug !== p.slug).slice(0, 3) } }))
+}
+const { post, more } = Astro.props
+---
+<Base title={`${post.title} | Oriel Journal`} description={post.standfirst} image={post.cover}>
+  <article>
+    <header class="band pt-10 md:pt-16">
+      <div class="shell max-w-[860px]">
+        <p class="t-meta text-ash">
+          {post.category} · <time datetime={post.date}>{post.dateLabel}</time> · {post.read} read
+        </p>
+        <h1 class="t-xl mt-6"><Words text={post.title} /></h1>
+        <p class="t-lead mt-8 max-w-[52ch] text-ash">{post.standfirst}</p>
+      </div>
+    </header>
+
+    <figure class="pb-16 md:pb-24">
+      <div class="shell">
+        <Frame
+          src={post.cover}
+          alt={post.coverAlt}
+          eager
+          sizes="100vw"
+          class={post.portraitCover ? "mx-auto aspect-[4/5] w-full max-w-[760px]" : "aspect-[16/9] w-full"}
+        />
+        <figcaption class="t-meta mt-3 text-ash">{post.caption}</figcaption>
+      </div>
+    </figure>
+
+    <section class="pb-[72px] md:pb-[120px]">
+      <div class="shell max-w-[720px]">
+        <p class="t-lead">{post.intro}</p>
+        {post.paragraphs.map((para, i) => (
+          <p class="t-body mt-6 text-ash" data-reveal style={`--reveal-delay:${(i * 0.07).toFixed(2)}s`}>{para}</p>
+        ))}
+        <p class="t-meta mt-12 text-ash">{post.signature}</p>
+      </div>
+    </section>
+
+    <section class="band bg-stone/50">
+      <div class="shell">
+        <p class="t-meta text-ash">{journal.more}</p>
+        <ul class="mt-8">
+          {more.map((p, i) => <JournalRow post={p} delay={Number((i * 0.07).toFixed(2))} />)}
+        </ul>
+      </div>
+    </section>
+  </article>
+
+  <ContactBand />
+</Base>

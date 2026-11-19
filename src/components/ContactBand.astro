@@ -1,0 +1,62 @@
+---
+import Frame from "./Frame.astro"
+import Words from "./Words.astro"
+import Reveal from "./Reveal.astro"
+import { contact } from "@/data/content"
+interface Props { variant?: "band" | "page"; level?: "h1" | "h2" }
+const { variant = "band", level = "h2" } = Astro.props
+const Head = level as any
+const isPage = variant === "page"
+---
+<section id="contact" class={`bg-night text-ondark ${isPage ? "pb-[88px] pt-14 md:pb-[120px] md:pt-20 lg:pb-[160px] lg:pt-24" : "band"}`}>
+  <div class="shell">
+    <p class="t-meta flex items-center gap-2 text-bluenight">
+      <span aria-hidden="true" class="inline-block h-[6px] w-[6px] rounded-full bg-bluenight"></span>
+      {contact.eyebrow}
+    </p>
+    <Head class="t-hero mt-6 max-w-[14ch]">
+      <Words text={contact.title.slice(0, 2).join(" ")} />{" "}
+      <span class="t-hero-serif italic"><Words text={contact.title[2]} /></span>
+    </Head>
+
+    <div class={`mt-12 grid gap-10 ${isPage ? "lg:grid-cols-2 lg:gap-16" : "lg:grid-cols-2"}`}>
+      <div>
+        <p class="t-body max-w-[44ch] text-ondark/85">{contact.body}</p>
+        <div class="mt-9 flex flex-wrap items-center gap-6">
+          {!isPage && (
+            <a
+              href="/contact"
+              class="t-button inline-flex items-center gap-2 rounded-full bg-ondark px-6 py-3 text-basalt transition-colors duration-300 hover:bg-bluenight hover:text-ondark"
+            >{contact.button}</a>
+          )}
+          <p class="t-meta flex items-center gap-2 text-ashnight">
+            <span aria-hidden="true" class="inline-block h-[6px] w-[6px] rounded-full bg-bluenight"></span>
+            {contact.availability}
+          </p>
+        </div>
+      </div>
+
+      <Reveal as="ul" class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+        {contact.details.map(([k, v]) => (
+          <li class="rule-dark pt-5">
+            <p class="t-meta text-ashnight">{k}</p>
+            {k === "Write" ? (
+              <p class="t-body mt-2"><a href={`mailto:${v}`} class="link-quiet">{v}</a></p>
+            ) : k === "Call" ? (
+              <p class="t-body mt-2"><a href={`tel:${v.replace(/\s/g, "")}`} class="link-quiet">{v}</a></p>
+            ) : (
+              <p class="t-body mt-2">{v}</p>
+            )}
+          </li>
+        ))}
+      </Reveal>
+    </div>
+
+    {!isPage && (
+      <figure class="mt-16">
+        <Frame src={contact.image} alt={contact.alt} class="aspect-[21/9] w-full" sizes="100vw" />
+        <figcaption class="t-meta mt-3 text-ashnight">{contact.caption}</figcaption>
+      </figure>
+    )}
+  </div>
+</section>

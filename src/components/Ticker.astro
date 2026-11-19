@@ -1,0 +1,9 @@
+---
+import { ticker } from "@/data/content"
+const line = `${ticker} · `
+---
+<section aria-hidden="true" class="ticker border-y border-hairline bg-stone/60 overflow-hidden py-6 md:py-10">
+  <div class="ticker-track">
+    {[0, 1].map(() => <span class="t-m whitespace-nowrap font-light text-ash">{line.repeat(4)}</span>)}
+  </div>
+</section>
