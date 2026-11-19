@@ -36,6 +36,7 @@ const chips = ["All", ...projects.map((p) => `${p.code.replace("N°", "")} ${p.t
               class="chip t-meta rounded-full border border-hairline px-4 py-2 transition-colors duration-300"
               data-filter={i === 0 ? "all" : projects[i - 1].slug}
               data-active={i === 0 ? "" : undefined}
+              aria-pressed={i === 0 ? "true" : "false"}
             >{f}</button>
           </li>
         ))}
@@ -88,8 +89,12 @@ const chips = ["All", ...projects.map((p) => `${p.code.replace("N°", "")} ${p.t
     buttons.forEach((b) =>
       b.addEventListener("click", () => {
         const value = b.dataset.filter!
-        buttons.forEach((x) => x.removeAttribute("data-active"))
+        buttons.forEach((x) => {
+          x.removeAttribute("data-active")
+          x.setAttribute("aria-pressed", "false")
+        })
         b.setAttribute("data-active", "")
+        b.setAttribute("aria-pressed", "true")
         blocks.forEach((block) => {
           block.hidden = !(value === "all" || block.dataset.series === value)
         })
@@ -100,7 +105,6 @@ const chips = ["All", ...projects.map((p) => `${p.code.replace("N°", "")} ${p.t
       })
     )
   }
-  initFilters()
   document.addEventListener("astro:page-load", initFilters)
 </script>
 

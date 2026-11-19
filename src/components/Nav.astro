@@ -26,7 +26,7 @@ const path = Astro.url.pathname
     <button id="nav-toggle" type="button" class="t-button py-2 md:hidden" aria-expanded="false" aria-controls="nav-drawer">Menu</button>
   </nav>
 
-  <div id="nav-drawer" class="grid grid-rows-[0fr] overflow-hidden bg-salt transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden">
+  <div id="nav-drawer" inert class="grid grid-rows-[0fr] overflow-hidden bg-salt transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden">
     <div class="min-h-0">
       <div class="border-y border-hairline px-5 pb-7 pt-2">
         <ul class="flex flex-col">
@@ -49,12 +49,16 @@ const path = Astro.url.pathname
 </header>
 
 <script>
+  let navScope = new AbortController()
   function initNav() {
     const nav = document.getElementById("nav")
     const toggle = document.getElementById("nav-toggle")
     const drawer = document.getElementById("nav-drawer")
-    if (!nav || !toggle || !drawer || nav.dataset.bound) return
-    nav.dataset.bound = "1"
+    if (!nav || !toggle || !drawer) return
+    navScope.abort()
+    navScope = new AbortController()
+    const { signal } = navScope
+    document.body.style.overflow = ""
     let open = false
     let last = window.scrollY
 
@@ -63,10 +67,20 @@ const path = Astro.url.pathname
       drawer.style.gridTemplateRows = open ? "1fr" : "0fr"
       toggle.textContent = open ? "Close" : "Menu"
       toggle.setAttribute("aria-expanded", String(open))
+      drawer.inert = !open
       document.body.style.overflow = open ? "hidden" : ""
     }
     toggle.addEventListener("click", () => setOpen(!open))
     drawer.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)))
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key !== "Escape" || !open) return
+        setOpen(false)
+        toggle.focus()
+      },
+      { signal }
+    )
 
     // Framer "Hidden" variants: the bar fades out while scrolling down and back in on the way up.
     window.addEventListener(
@@ -78,10 +92,9 @@ const path = Astro.url.pathname
         nav.style.pointerEvents = hide ? "none" : ""
         last = y
       },
-      { passive: true }
+      { passive: true, signal }
     )
   }
 
-  initNav()
   document.addEventListener("astro:page-load", initNav)
 </script>

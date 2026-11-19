@@ -21,6 +21,5 @@ import { ticker } from "@/data/content"
       band.addEventListener("mouseleave", () => anims().forEach((a) => a.updatePlaybackRate(1)))
     })
   }
-  bindTickers()
   document.addEventListener("astro:page-load", bindTickers)
 </script>

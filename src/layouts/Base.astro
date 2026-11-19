@@ -108,7 +108,7 @@ const ogImage = new URL(og.src, Astro.site ?? site.url).toString()
         nodes.forEach((n) => io.observe(n))
       }
 
-      function parallax() {
+      function parallax(signal: AbortSignal) {
         if (motionOff()) return
         const items = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"))
         if (!items.length) return
@@ -129,19 +129,21 @@ const ogImage = new URL(og.src, Astro.site ?? site.url).toString()
           ticking = true
           requestAnimationFrame(run)
         }
-        window.addEventListener("scroll", onScroll, { passive: true })
-        window.addEventListener("resize", onScroll)
+        window.addEventListener("scroll", onScroll, { passive: true, signal })
+        window.addEventListener("resize", onScroll, { signal })
         run()
       }
 
-      function init() {
+      // astro:page-load fires on the first load and after every client-side navigation.
+      // Window listeners are dropped before each swap so they never pile up.
+      let pageScope = new AbortController()
+      document.addEventListener("astro:page-load", () => {
+        pageScope.abort()
+        pageScope = new AbortController()
         reveal()
         countUp()
-        parallax()
-      }
-
-      init()
-      document.addEventListener("astro:page-load", init)
+        parallax(pageScope.signal)
+      })
     </script>
   </body>
 </html>
