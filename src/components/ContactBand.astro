@@ -1,7 +1,6 @@
 ---
 import Frame from "./Frame.astro"
 import Words from "./Words.astro"
-import Button from "./Button.astro"
 import { contact, site } from "@/data/content"
 interface Props { variant?: "band" | "page" | "spacious" | "studio"; level?: "h1" | "h2" }
 const { variant = "band", level = "h2" } = Astro.props
@@ -38,7 +37,6 @@ const Details = isPage ? "grid gap-4 md:grid-cols-2 md:gap-8" : "grid gap-6 md:g
       <div class={`flex flex-col ${isPage ? "gap-8 lg:gap-12" : "gap-4 md:gap-6 lg:flex-1 lg:gap-8"}`}>
         <p class="t-lead max-w-[520px]">{contact.body}</p>
         <div class="flex flex-col items-stretch gap-4 md:flex-row md:flex-wrap md:items-center md:gap-[22px]">
-          {!isPage && <Button href={`mailto:${site.email}`} variant="secondary">{contact.button}</Button>}
           <p class="flex items-center gap-2">
             <span aria-hidden="true" class="h-[7px] w-[7px] rounded-full bg-bluenight"></span>
             <span class="t-meta">{contact.availability}</span>

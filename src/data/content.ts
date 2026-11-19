@@ -628,7 +628,6 @@ export const contact = {
   body:
     "Tell me about the place, the season and what the light does there. I'll tell you honestly whether it's worth the wait.",
   availability: "Taking commissions for spring 2027",
-  button: "Propose a place →",
   details: [
     ["Write", site.email],
     ["Call", site.phone],
@@ -662,7 +661,6 @@ export const footer = {
         { label: "Rates", href: "/studio#rates" },
         { label: "Journal", href: "/journal" },
         { label: "Contact", href: "/contact" },
-        { label: "Photo credits" },
       ],
     },
   ],
