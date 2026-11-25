@@ -1,0 +1,147 @@
+---
+import "@/styles/global.css"
+import Nav from "@/components/Nav.astro"
+import Footer from "@/components/Footer.astro"
+import { ClientRouter } from "astro:transitions"
+import { getImage } from "astro:assets"
+import { photo } from "@/lib/images"
+import { site } from "@/data/content"
+
+interface Props {
+  title: string
+  description: string
+  image?: string
+  noindex?: boolean
+}
+const { title, description, image = site.socialImage, noindex = false } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString()
+const og = await getImage({ src: photo(image), width: 1200, height: 630, fit: "cover", format: "jpeg", quality: 80 })
+const ogImage = new URL(og.src, Astro.site ?? site.url).toString()
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://framerusercontent.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+    <ClientRouter />
+  </head>
+  <body id="top">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-basalt focus:px-4 focus:py-2 focus:text-salt">Skip to content</a>
+    <Nav />
+    <main id="main" class="pt-16"><slot /></main>
+    <Footer />
+
+    <script>
+      const motionOff = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+      function reveal() {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue
+              e.target.classList.add("is-in")
+              io.unobserve(e.target)
+            }
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+        )
+        document
+          .querySelectorAll("[data-reveal]:not(.is-in),[data-frame]:not(.is-in),[data-words]:not(.is-in)")
+          .forEach((el) => io.observe(el))
+      }
+
+      function countUp() {
+        const nodes = document.querySelectorAll("[data-count]:not([data-counted])")
+        if (!nodes.length) return
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue
+              const el = e.target as HTMLElement
+              io.unobserve(el)
+              el.dataset.counted = "true"
+              const raw = el.dataset.count || el.textContent || ""
+              const target = Number(raw.replace(/[^0-9.]/g, ""))
+              if (!Number.isFinite(target) || target === 0) continue
+              if (motionOff()) { el.textContent = raw; continue }
+              const start = performance.now()
+              const dur = 1400
+              const tick = (now: number) => {
+                const t = Math.min(1, (now - start) / dur)
+                const eased = 1 - Math.pow(1 - t, 3)
+                el.textContent = String(Math.round(target * eased))
+                if (t < 1) requestAnimationFrame(tick)
+                else el.textContent = raw
+              }
+              el.textContent = "0"
+              requestAnimationFrame(tick)
+            }
+          },
+          { threshold: 0.4 }
+        )
+        nodes.forEach((n) => io.observe(n))
+      }
+
+      function parallax() {
+        if (motionOff()) return
+        const items = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"))
+        if (!items.length) return
+        let ticking = false
+        const run = () => {
+          const h = window.innerHeight
+          for (const el of items) {
+            const r = el.getBoundingClientRect()
+            if (r.bottom < -200 || r.top > h + 200) continue
+            const progress = (r.top + r.height / 2 - h / 2) / h
+            const speed = Number(el.dataset.parallax || "6")
+            el.style.setProperty("--py", `${(-progress * speed).toFixed(2)}%`)
+          }
+          ticking = false
+        }
+        const onScroll = () => {
+          if (ticking) return
+          ticking = true
+          requestAnimationFrame(run)
+        }
+        window.addEventListener("scroll", onScroll, { passive: true })
+        window.addEventListener("resize", onScroll)
+        run()
+      }
+
+      function init() {
+        reveal()
+        countUp()
+        parallax()
+      }
+
+      init()
+      document.addEventListener("astro:page-load", init)
+    </script>
+  </body>
+</html>

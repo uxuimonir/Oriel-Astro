@@ -1,0 +1,18 @@
+---
+import Frame from "./Frame.astro"
+import type { Post } from "@/data/content"
+interface Props { post: Post; delay?: number; ratio?: string }
+const { post, delay = 0, ratio = "aspect-[3/2]" } = Astro.props
+---
+<li data-reveal style={`--reveal-delay:${delay}s`}>
+  <a href={`/journal/${post.slug}`} class="group block">
+    <Frame
+      src={post.cover}
+      alt={post.coverAlt}
+      class={`w-full ${ratio}`}
+      sizes="(min-width:810px) 50vw, 100vw"
+    />
+    <p class="t-meta mt-4 text-ash">{post.featureMeta}</p>
+    <h3 class="t-small mt-2 max-w-[28ch] text-[16px] leading-[1.3] transition-colors group-hover:text-blue md:text-[18px]" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{post.title}</h3>
+  </a>
+</li>

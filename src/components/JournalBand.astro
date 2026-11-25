@@ -1,0 +1,31 @@
+---
+import Words from "./Words.astro"
+import JournalRow from "./JournalRow.astro"
+import { journal, posts } from "@/data/content"
+
+const bySlug = new Map(posts.map((p) => [p.slug, p]))
+const rows = journal.homeRows
+  .map((r) => {
+    const post = bySlug.get(r.slug)
+    return post ? { ...post, cover: r.cover } : null
+  })
+  .filter(Boolean) as typeof posts
+---
+<section class="band">
+  <div class="shell">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <h2 class="t-l max-w-[14ch]">
+        <Words text={journal.title[0]} />{" "}
+        <span class="t-l-serif italic"><Words text={journal.title[1]} /></span>
+      </h2>
+      <p class="t-body max-w-[420px] text-ash">{journal.bodyHome}</p>
+    </div>
+    <ul class="mt-12">
+      {rows.map((p, i) => <JournalRow post={p} delay={Number((i * 0.07).toFixed(2))} />)}
+    </ul>
+    <a href="/journal" class="t-small mt-10 inline-flex items-center gap-2 border-b border-current pb-1 transition-colors duration-300 hover:text-blue">
+      {journal.more}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

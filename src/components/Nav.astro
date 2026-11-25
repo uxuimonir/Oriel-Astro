@@ -1,0 +1,88 @@
+---
+import { site } from "@/data/content"
+const path = Astro.url.pathname
+---
+<header id="nav" class="fixed inset-x-0 top-0 z-50 bg-salt/90 backdrop-blur transition-transform duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]">
+  <nav class="shell flex h-16 items-center justify-between gap-6" aria-label="Primary">
+    <a href="/" class="t-logo flex items-center gap-2">
+      <span aria-hidden="true" class="inline-block h-3.5 w-3.5 rounded-t-full border border-basalt"></span>
+      {site.name}
+    </a>
+
+    <p class="t-meta hidden text-ash lg:block">{site.lightReport}</p>
+
+    <ul class="hidden items-center gap-7 md:flex">
+      {site.nav.map((l) => (
+        <li>
+          <a
+            href={l.href}
+            class="t-small link-nav"
+            style={path.startsWith(l.href) ? "color:var(--color-blue)" : undefined}
+            aria-current={path.startsWith(l.href) ? "page" : undefined}
+          >{l.label}</a>
+        </li>
+      ))}
+    </ul>
+
+    <button id="nav-toggle" type="button" class="t-meta md:hidden" aria-expanded="false" aria-controls="nav-drawer">Menu</button>
+  </nav>
+
+  <div id="nav-drawer" class="grid grid-rows-[0fr] overflow-hidden border-t border-hairline bg-salt transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden">
+    <div class="min-h-0">
+      <ul class="shell flex flex-col py-4">
+        {site.nav.map((l, i) => (
+          <li class={i ? "rule" : ""}>
+            <a href={l.href} class="t-m link-nav flex items-center justify-between py-4">
+              {l.label}
+              <span class="t-meta text-ash">{String(i + 1).padStart(2, "0")}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="shell t-meta pb-6 text-ash">{site.lightReportShort}</p>
+    </div>
+  </div>
+</header>
+
+<script>
+  function initNav() {
+    const nav = document.getElementById("nav")
+    const toggle = document.getElementById("nav-toggle")
+    const drawer = document.getElementById("nav-drawer")
+    if (!nav || !toggle || !drawer) return
+    let open = false
+    let last = window.scrollY
+
+    toggle.addEventListener("click", () => {
+      open = !open
+      drawer.style.gridTemplateRows = open ? "1fr" : "0fr"
+      toggle.textContent = open ? "Close" : "Menu"
+      toggle.setAttribute("aria-expanded", String(open))
+      document.body.style.overflow = open ? "hidden" : ""
+    })
+
+    drawer.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => {
+        open = false
+        drawer.style.gridTemplateRows = "0fr"
+        toggle.textContent = "Menu"
+        toggle.setAttribute("aria-expanded", "false")
+        document.body.style.overflow = ""
+      })
+    )
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const y = window.scrollY
+        const hide = y > last && y > 180 && !open
+        nav.style.transform = hide ? "translateY(-100%)" : "translateY(0)"
+        last = y
+      },
+      { passive: true }
+    )
+  }
+
+  initNav()
+  document.addEventListener("astro:page-load", initNav)
+</script>

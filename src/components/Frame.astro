@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets"
+import { photo } from "@/lib/images"
+
+/** Image frame: exposure-open reveal on view, slow zoom on hover (Framer hoverEffect scale 1.03 / 0.6s). */
+interface Props {
+  src: string
+  alt: string
+  class?: string
+  imgClass?: string
+  hover?: boolean
+  eager?: boolean
+  sizes?: string
+  widths?: number[]
+}
+const {
+  src,
+  alt,
+  class: className = "",
+  imgClass = "",
+  hover = true,
+  eager = false,
+  sizes = "100vw",
+  widths = [420, 768, 1200, 1800],
+} = Astro.props
+const source = photo(src)
+const list = widths.filter((w) => w <= source.width)
+if (list.length === 0) list.push(source.width)
+---
+<div class={`relative ${className}`} data-frame data-hover={hover ? "" : undefined}>
+  <Image
+    src={source}
+    alt={alt}
+    widths={list}
+    sizes={sizes}
+    format="webp"
+    quality={78}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={eager ? "high" : "auto"}
+    class={`h-full w-full object-cover ${imgClass}`}
+  />
+</div>

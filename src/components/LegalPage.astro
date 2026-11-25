@@ -1,0 +1,27 @@
+---
+import Words from "./Words.astro"
+import type { LegalDoc } from "@/data/legal"
+interface Props { doc: LegalDoc }
+const { doc } = Astro.props
+---
+<section class="bg-night pb-[88px] pt-14 text-ondark md:pb-[120px] md:pt-20 lg:pb-[160px] lg:pt-24">
+  <div class="shell">
+    <p class="t-meta flex items-center gap-2 text-bluenight">
+      <span aria-hidden="true" class="inline-block h-[6px] w-[6px] rounded-full bg-bluenight"></span>
+      {doc.eyebrow}
+    </p>
+    <h1 class="t-l-serif mt-6 italic"><Words text={doc.title} /></h1>
+    <article class="mt-12 max-w-[720px]">
+      <p class="t-meta text-ashnight">Last updated {doc.updated}</p>
+      <p class="t-lead mt-8">{doc.lead}</p>
+      <div class="mt-12 grid gap-12">
+        {doc.sections.map((s) => (
+          <section>
+            <h2 class="t-quote">{s.title}</h2>
+            <p class="t-body mt-4 text-ondark/70">{s.body}</p>
+          </section>
+        ))}
+      </div>
+    </article>
+  </div>
+</section>

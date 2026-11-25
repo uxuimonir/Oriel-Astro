@@ -1,0 +1,58 @@
+---
+import { contact, site } from "@/data/content"
+---
+<form class="mt-10 space-y-7" id="contact-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
+  <div class="grid gap-6 sm:grid-cols-2">
+    {contact.fields.slice(0, 2).map((f) => (
+      <label class="block">
+        <span class="t-meta block text-ashnight">{f.label}</span>
+        <input
+          name={f.name}
+          type={f.type}
+          required
+          placeholder={f.placeholder}
+          class="mt-3 w-full border-b border-white/20 bg-transparent py-3 text-[15px] text-ondark outline-none transition-colors placeholder:text-ondark/30 focus:border-ondark/65"
+        />
+      </label>
+    ))}
+  </div>
+  {contact.fields.slice(2).map((f) => (
+    <label class="block">
+      <span class="t-meta block text-ashnight">{f.label}</span>
+      {f.type === "textarea" ? (
+        <textarea
+          name={f.name}
+          rows="3"
+          required
+          placeholder={f.placeholder}
+          class="mt-3 w-full resize-none border-b border-white/20 bg-transparent py-3 text-[15px] text-ondark outline-none transition-colors placeholder:text-ondark/30 focus:border-ondark/65"
+        ></textarea>
+      ) : (
+        <input
+          name={f.name}
+          type={f.type}
+          required
+          placeholder={f.placeholder}
+          class="mt-3 w-full border-b border-white/20 bg-transparent py-3 text-[15px] text-ondark outline-none transition-colors placeholder:text-ondark/30 focus:border-ondark/65"
+        />
+      )}
+    </label>
+  ))}
+  <button
+    type="submit"
+    id="contact-submit"
+    class="t-button h-[54px] w-full rounded-[2px] bg-salt uppercase tracking-[0.08em] text-night transition-transform hover:scale-[1.01] disabled:opacity-70 sm:w-[280px]"
+  >{contact.submit}</button>
+  <p class="t-meta text-ashnight" id="contact-note" hidden>Opening your mail app — or write to {site.email} directly.</p>
+</form>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null
+  const note = document.getElementById("contact-note")
+  const btn = document.getElementById("contact-submit")
+  form?.addEventListener("submit", () => {
+    if (note) note.hidden = false
+    if (btn) btn.textContent = "Sending…"
+    setTimeout(() => { if (btn) btn.textContent = "Thank you — I'll write back" }, 900)
+  })
+</script>

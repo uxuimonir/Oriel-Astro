@@ -1,0 +1,9 @@
+---
+import Base from "@/layouts/Base.astro"
+import LegalPage from "@/components/LegalPage.astro"
+import { getLegal } from "@/data/legal"
+const doc = getLegal("cookies")
+---
+<Base title={`${doc.title} — Oriel`} description={doc.description}>
+  <LegalPage doc={doc} />
+</Base>

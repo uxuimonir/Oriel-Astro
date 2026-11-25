@@ -1,0 +1,15 @@
+---
+import Words from "./Words.astro"
+import Frame from "./Frame.astro"
+import { cinematic } from "@/data/content"
+---
+<section class="relative isolate">
+  <Frame src={cinematic.image} alt={cinematic.alt} hover={false} class="h-[70vh] min-h-[420px] w-full" sizes="100vw" />
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/85 via-night/45 to-transparent"></div>
+  <div class="absolute inset-x-0 bottom-0">
+    <div class="shell pb-10 md:pb-14">
+      <h2 class="t-l max-w-[16ch] text-ondark"><Words text={cinematic.title.join(" ")} /></h2>
+      <p class="t-meta mt-4 text-ondark/60">{cinematic.caption}</p>
+    </div>
+  </div>
+</section>
