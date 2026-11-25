@@ -8,7 +8,7 @@ import { contact, site } from "@/data/content"
         <span class="t-meta block text-ashnight">{f.label}</span>
         <input
           name={f.name}
-          type={f.type}
+          type={f.type === "textarea" ? "text" : f.type}
           required
           placeholder={f.placeholder}
           class="mt-3 w-full border-b border-white/20 bg-transparent py-3 text-[15px] text-ondark outline-none transition-colors placeholder:text-ondark/30 focus:border-ondark/65"

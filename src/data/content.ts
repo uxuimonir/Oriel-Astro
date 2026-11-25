@@ -637,6 +637,18 @@ export const contact = {
   image: img("jouZtiy8EqzzQX7ZzPHiR2tlyY.jpg"),
   alt: "A lighthouse in silhouette against a burning sunset sky.",
   caption: "21:30 — The lighthouse, first beam of the night",
+  fields: [
+    { label: "Name", name: "name", type: "text", placeholder: "Your name" },
+    { label: "Email", name: "email", type: "email", placeholder: "you@studio.com" },
+    { label: "Place and season", name: "place", type: "text", placeholder: "Alentejo, early autumn" },
+    { label: "Message", name: "message", type: "textarea", placeholder: "Tell me about the place and what the light should do." },
+  ] as const,
+  submit: "Send enquiry →",
+}
+
+export const enquiry = {
+  to: site.email,
+  kinds: ["Portrait", "Editorial", "Documentary", "Campaign", "Something else"],
 }
 
 export const notFound = {

@@ -1,7 +1,7 @@
 ---
 import Frame from "./Frame.astro"
 import Words from "./Words.astro"
-import { contact, site } from "@/data/content"
+import { contact } from "@/data/content"
 interface Props { variant?: "band" | "page" | "spacious" | "studio"; level?: "h1" | "h2" }
 const { variant = "band", level = "h2" } = Astro.props
 const Head = level as any
